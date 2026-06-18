@@ -391,7 +391,7 @@
   function prevStep() { if (current > 0) goChapter(current - 1); }
 
   /* ── Fin de l'expérience : un clic n'importe où → retour au portfolio ── */
-  function backHome() { window.location.href = 'index.html'; }
+  function backHome() { window.location.href = 'index.html#projets'; }
   function goEnd() {
     clearTimeout(idleTimer);
     body.dataset.stage = 'end';
