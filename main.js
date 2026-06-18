@@ -506,6 +506,22 @@
   }
   audioBtn.addEventListener('click', () => updateAudioBtn(Audio.toggle()));
 
+  // formulaire de contact → ouvre l'app mail pré-remplie vers jean63.echalier@gmail.com
+  const mailForm = document.querySelector('.js-mailto-form');
+  if (mailForm) {
+    mailForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const val = n => { const el = mailForm.querySelector('[name="' + n + '"]'); return el ? el.value.trim() : ''; };
+      const subject = encodeURIComponent('Contact portfolio — ' + (val('name') || 'sans nom'));
+      const body = encodeURIComponent(
+        'Nom : ' + val('name') + '\n' +
+        'Email : ' + val('email') + '\n\n' +
+        val('message')
+      );
+      window.location.href = 'mailto:jean63.echalier@gmail.com?subject=' + subject + '&body=' + body;
+    });
+  }
+
   // clavier + molette en mode expérience
   window.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') openInfo(false);
