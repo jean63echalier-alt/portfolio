@@ -281,22 +281,45 @@
      Audio ambiant (WebAudio) — pad doux, démarre muet
      ────────────────────────────────────────────────────────── */
   const Audio = (() => {
-    let ctx, master, started = false, on = false;
+    let ctx, master, lp, melodyTimer = null, started = false, on = false;
+    // gamme pentatonique douce (La mineur) pour une mélodie agréable
+    const SCALE = [220.00, 261.63, 293.66, 329.63, 392.00, 440.00, 523.25];
+    function playNote() {
+      if (!on || !ctx) return;
+      const base = SCALE[Math.floor(Math.random() * SCALE.length)];
+      const f = base * (Math.random() < 0.3 ? 2 : 1);
+      const o = ctx.createOscillator(); o.type = 'sine'; o.frequency.value = f;
+      const o2 = ctx.createOscillator(); o2.type = 'triangle'; o2.frequency.value = f; o2.detune.value = 6;
+      const g = ctx.createGain(); g.gain.value = 0.0001;
+      o.connect(g); o2.connect(g); g.connect(lp);
+      const t = ctx.currentTime;
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.linearRampToValueAtTime(0.06, t + 0.7);            // attaque douce
+      g.gain.exponentialRampToValueAtTime(0.0001, t + 4.5);     // longue traîne
+      o.start(t); o2.start(t); o.stop(t + 4.8); o2.stop(t + 4.8);
+    }
     function build() {
       const AC = window.AudioContext || window.webkitAudioContext;
       if (!AC) return false;
       ctx = new AC();
       master = ctx.createGain(); master.gain.value = 0; master.connect(ctx.destination);
-      const lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 620; lp.connect(master);
-      [110, 146.83, 220, 164.81].forEach((f, i) => {
+      // réverb légère (delay en feedback) → sensation d'espace
+      const delay = ctx.createDelay(2); delay.delayTime.value = 0.5;
+      const fb = ctx.createGain(); fb.gain.value = 0.32; delay.connect(fb); fb.connect(delay);
+      const wet = ctx.createGain(); wet.gain.value = 0.45; delay.connect(wet); wet.connect(master);
+      // filtre chaud
+      lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 950; lp.Q.value = 0.4;
+      lp.connect(master); lp.connect(delay);
+      // pad : accord La mineur 7 (A C E G), grave et enveloppant
+      [110, 130.81, 164.81, 196.00].forEach((f, i) => {
         const o = ctx.createOscillator(); o.type = i % 2 ? 'sine' : 'triangle';
-        o.frequency.value = f; o.detune.value = (i - 1.5) * 6;
-        const g = ctx.createGain(); g.gain.value = 0.16 / (i + 1);
+        o.frequency.value = f; o.detune.value = (i - 1.5) * 4;
+        const g = ctx.createGain(); g.gain.value = 0.10 / (i * 0.4 + 1);
         o.connect(g); g.connect(lp); o.start();
       });
-      // LFO doux sur le filtre
-      const lfo = ctx.createOscillator(); lfo.frequency.value = 0.07;
-      const lg = ctx.createGain(); lg.gain.value = 180;
+      // LFO lent sur le filtre → mouvement organique
+      const lfo = ctx.createOscillator(); lfo.frequency.value = 0.05;
+      const lg = ctx.createGain(); lg.gain.value = 300;
       lfo.connect(lg); lg.connect(lp.frequency); lfo.start();
       started = true; return true;
     }
@@ -306,7 +329,9 @@
         if (ctx.state === 'suspended') ctx.resume();
         on = !on;
         master.gain.cancelScheduledValues(ctx.currentTime);
-        master.gain.linearRampToValueAtTime(on ? 0.5 : 0.0001, ctx.currentTime + 0.8);
+        master.gain.linearRampToValueAtTime(on ? 0.42 : 0.0001, ctx.currentTime + 0.9);
+        clearInterval(melodyTimer);
+        if (on) { setTimeout(playNote, 600); melodyTimer = setInterval(playNote, 4300); }
         return on;
       },
       get on() { return on; }
@@ -349,7 +374,15 @@
       .to(ins,  { opacity: 1, y: 0, duration: .6, ease: 'power2.out' }, '-=0.2');
   }
 
+  // met en pause toutes les vidéos YouTube des chapitres (lecture inactive par défaut)
+  function pauseAllVideos() {
+    document.querySelectorAll('.chapter iframe[src*="youtube.com/embed"]').forEach(f => {
+      try { f.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*'); } catch (e) {}
+    });
+  }
+
   function showChapter(idx) {
+    pauseAllVideos();                            // coupe toute vidéo en cours avant de changer
     chaptersEls.forEach((el, i) => el.classList.toggle('is-active', i === idx));
     dots.forEach((d, i) => d.classList.toggle('active', i === idx));
     if (GL) GL.goShape(idx);
@@ -476,14 +509,23 @@
   // clavier + molette en mode expérience
   window.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') openInfo(false);
+    if (stage === 'intro') {
+      if (['ArrowDown', 'PageDown', ' ', 'Enter'].includes(e.key)) { e.preventDefault(); enterExperience(); }
+      return;
+    }
     if (stage !== 'experience') return;
     if (['ArrowDown', 'ArrowRight', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); nextStep(); }
     if (['ArrowUp', 'ArrowLeft', 'PageUp'].includes(e.key)) { e.preventDefault(); prevStep(); }
   });
   let wheelLock = false;
   window.addEventListener('wheel', (e) => {
-    if (stage !== 'experience') return;
     if (wheelLock || Math.abs(e.deltaY) < 24) return;
+    // sur l'accueil : faire défiler vers le bas entre dans l'expérience
+    if (stage === 'intro') {
+      if (e.deltaY > 0) { wheelLock = true; setTimeout(() => wheelLock = false, 850); enterExperience(); }
+      return;
+    }
+    if (stage !== 'experience') return;
     wheelLock = true; setTimeout(() => wheelLock = false, 850);
     e.deltaY > 0 ? nextStep() : prevStep();
   }, { passive: true });

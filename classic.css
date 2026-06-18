@@ -840,3 +840,22 @@ footer {
   .hero-name .word span { transform: none !important; }
   * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
 }
+
+/* ── Aperçu de site live (mobile) ── */
+.m-site { width: 100%; max-width: 460px; margin: 0 auto; border-radius: 12px; overflow: hidden;
+  border: 1px solid var(--gray-300); background: #0d0d0d; box-shadow: 0 22px 48px -26px rgba(17,17,16,.4); }
+.m-bar { display: flex; align-items: center; gap: 6px; height: 30px; padding: 0 12px; background: #161616; }
+.m-bar i { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,.35); }
+.m-bar em { margin-left: 10px; font-style: normal; font-size: .64rem; letter-spacing: .04em; color: rgba(255,255,255,.6); }
+.m-screen { display: block; position: relative; aspect-ratio: 3 / 4; background: #0d0d0d; }
+.m-screen iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block; }
+
+/* ── Anti-débordement mobile : tout tient dans l'écran ── */
+@media (max-width: 768px) {
+  html, body { overflow-x: hidden; max-width: 100%; }
+  .rs-duo { grid-template-columns: 1fr; gap: 16px; }
+  .rs-duo > *, .site-preview, .rs-video-wrapper, .video-wrapper, .m-site,
+  .project-media, .project-hero__right, .project-hero__left, .project-meta { width: 100%; max-width: 100%; min-width: 0; }
+  img, iframe, .project-screenshot, .rs-screenshot { max-width: 100%; height: auto; }
+  .mth-preview, .mth-modules { max-width: 100%; }
+}
