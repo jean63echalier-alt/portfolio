@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jean Echalier — Social Media &amp; Web Design</title>
+  <meta name="description" content="Portfolio de Jean Echalier, créateur de contenu et web designer basé à Paris." />
+
+  <!-- OG -->
+  <meta property="og:title" content="Jean Echalier — Social Media &amp; Web Design" />
+  <meta property="og:description" content="Portfolio de Jean Echalier, créateur de contenu et web designer basé à Paris." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://jeechalier.fr" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+
+  <link rel="stylesheet" href="classic.css" />
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+  <link rel="apple-touch-icon" href="assets/favicon.png" />
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header id="header">
+    <a href="#hero" class="logo" aria-label="Jean Echalier">JE</a>
+    <nav>
+      <button class="hamburger" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span>
+      </button>
+      <ul class="nav-links">
+        <li><a href="#competences">Compétences</a></li>
+        <li><a href="#projets">Projets</a></li>
+        <li><a href="#apropos">À propos</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section id="hero">
+    <svg class="hero-circle" viewBox="0 0 600 600" fill="none" aria-hidden="true">
+      <circle cx="300" cy="300" r="298" stroke="currentColor" stroke-width="1"/>
+      <circle cx="300" cy="300" r="220" stroke="currentColor" stroke-width="0.5" opacity="0.5"/>
+    </svg>
+    <div class="hero-inner">
+      <p class="hero-eyebrow">Portfolio</p>
+      <h1 class="hero-name">
+        <span class="word">Jean</span>
+        <span class="word">Echalier</span>
+      </h1>
+      <p class="hero-title">Social Media &amp; Web Design</p>
+      <p class="hero-tagline">Je transforme des idées en réalité.</p>
+      <a href="#projets" class="cta-scroll" aria-label="Voir les projets">
+        <span>Voir les projets</span>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M8 3v10M3 8l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- COMPÉTENCES -->
+  <section id="competences">
+    <div class="section-inner">
+      <h2 class="section-label">Compétences</h2>
+      <div class="skills-grid">
+        <div class="skill-block">
+          <svg class="skill-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z" fill="currentColor"/>
+          </svg>
+          <h3>Création de contenu</h3>
+          <p>Éditorial, visuels, storytelling — du concept à la publication.</p>
+        </div>
+        <div class="skill-block">
+          <svg class="skill-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <rect x="2" y="3" width="20" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M8 21h8M12 17v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <h3>Web Design</h3>
+          <p>Interfaces épurées, expériences fluides, attention au détail.</p>
+        </div>
+        <div class="skill-block">
+          <svg class="skill-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <h3>Vidéo</h3>
+          <p>Montage, motion, formats courts et longs pour tous canaux.</p>
+        </div>
+        <div class="skill-block">
+          <svg class="skill-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M22 4s-2.5 2.5-5 2.5S12 4 9 4 4 6.5 4 6.5V20s2-2 5-2 5 2.5 8 2.5 5-2 5-2V4z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+            <path d="M9 4v16M16.5 6.5v13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <h3>Réseaux sociaux</h3>
+          <p>Stratégie, community management, croissance organique.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJETS -->
+  <section id="projets">
+    <div class="section-inner">
+      <h2 class="section-label">Projets</h2>
+
+      <!-- LSDJ -->
+      <article class="project-card">
+        <div class="project-meta">
+          <span class="project-type">Média</span>
+          <h3>LSDJ</h3>
+          <p>Production et gestion des réseaux sociaux d'un média engagé. Stratégie de contenu, tournage et montage vidéo court-format.</p>
+        </div>
+        <div class="project-media">
+          <img
+            src="assets/images/lsdj-instagram.png"
+            alt="Compte Instagram LSDJ — La Sélection du Jour"
+            class="project-screenshot"
+            loading="lazy"
+          />
+        </div>
+      </article>
+
+      <!-- Mes Convictions -->
+      <article class="project-card project-card--reverse">
+        <div class="project-meta">
+          <span class="project-type">Site web</span>
+          <h3>Mes Convictions</h3>
+          <p>Plateforme civique permettant aux citoyens d'exprimer et partager leurs convictions. Design, identité visuelle et développement web.</p>
+          <a href="https://www.mesconvictions.com" target="_blank" rel="noopener" class="project-link">
+            mesconvictions.com
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+              <path d="M2 10L10 2M10 2H4M10 2v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        </div>
+        <div class="project-media">
+          <div class="site-preview">
+            <iframe
+              src="https://www.mesconvictions.com"
+              title="Aperçu Mes Convictions"
+              loading="lazy"
+              sandbox="allow-scripts allow-same-origin"
+            ></iframe>
+            <a href="https://www.mesconvictions.com" target="_blank" rel="noopener" class="preview-overlay" aria-label="Ouvrir Mes Convictions">
+              <span>Ouvrir le site</span>
+            </a>
+          </div>
+          <div class="rs-video-block">
+            <p class="rs-video-label">Réseaux sociaux</p>
+            <div class="rs-duo">
+              <div class="rs-video-wrapper">
+                <iframe
+                  src="https://www.youtube.com/embed/vm1HOIOmewY"
+                  title="Réveillez votre voix : la vraie participation citoyenne!"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerpolicy="strict-origin-when-cross-origin"
+                  allowfullscreen
+                  loading="lazy"
+                ></iframe>
+              </div>
+              <img
+                src="assets/images/mesconvictions-instagram.png"
+                alt="Compte Instagram Mes Convictions"
+                class="rs-screenshot"
+                loading="lazy"
+              />
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Clermont Foot 63 -->
+      <article class="project-card">
+        <div class="project-meta">
+          <span class="project-type">Club sportif</span>
+          <h3>Clermont Foot 63</h3>
+          <p>Création de contenus vidéo pour le club de football. Production, montage et diffusion sur les plateformes officielles.</p>
+        </div>
+        <div class="project-media">
+          <div class="video-wrapper">
+            <!-- Remplacer VIDEO_ID par l'ID YouTube réel -->
+            <iframe
+              src="about:blank"
+              data-src="https://www.youtube.com/embed/61wP3GZlEZA?rel=0&modestbranding=1"
+              title="Clermont Foot 63 — vidéo"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+              loading="lazy"
+            ></iframe>
+          </div>
+          <p class="embed-note">Remplacer <code>VIDEO_ID</code> dans index.html par l'ID YouTube réel.</p>
+        </div>
+      </article>
+
+      <!-- Puy-de-Dôme -->
+      <article class="project-card project-card--reverse">
+        <div class="project-meta">
+          <span class="project-type">Institution</span>
+          <h3>Département Puy-de-Dôme</h3>
+          <p>Gestion des réseaux sociaux institutionnels. Création de visuels, rédaction de posts et animation de communauté pour l'institution départementale.</p>
+        </div>
+        <div class="project-media">
+          <img
+            src="assets/images/puydedome-instagram.png"
+            alt="Compte Instagram Département Puy-de-Dôme — @departement63"
+            class="project-screenshot"
+            loading="lazy"
+          />
+        </div>
+      </article>
+
+      <!-- MyThèse -->
+      <article class="project-hero" id="projet-mythese">
+        <div class="project-hero__left">
+          <span class="project-type">SaaS · EdTech</span>
+          <h3>MyThèse</h3>
+          <p>Coach IA qui structure le mémoire de recherche — et met l'étudiant en lien avec son directeur aux moments clés. Sources peer-reviewed, méthodologie française stricte. Jamais à ta place.</p>
+          <a class="project-link" href="https://mythese.com" target="_blank" rel="noopener">
+            mythese.com
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 10L10 2M10 2H4M10 2v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+        <div class="project-hero__right project-hero__right--mythese">
+          <div class="mth-preview">
+            <p class="mth-eyebrow">Coach méthodologique IA · Pas un rédacteur fantôme</p>
+            <p class="mth-headline">Le coach IA qui structure ton<br><em>mémoire de recherche.</em></p>
+            <p class="mth-sub">Sources peer-reviewed via OpenAlex (250M papers).<br>Méthodologie française stricte. <strong>Jamais à ta place.</strong></p>
+          </div>
+          <p class="mth-collab">👤 Étudiant → IA → 🎓 Directeur de recherche — la validation reste humaine.</p>
+          <div class="mth-modules">
+            <div class="mth-module"><span class="mth-num">01</span><span class="mth-name">État de l'art</span><span class="mth-badge mth-badge--live">V1 live</span></div>
+            <div class="mth-module"><span class="mth-num">02</span><span class="mth-name">Coach problématique</span><span class="mth-badge mth-badge--live">V1 live</span></div>
+            <div class="mth-module"><span class="mth-num">03</span><span class="mth-name">Relecture méthodo</span><span class="mth-badge mth-badge--soon">V2 — bientôt</span></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Beeclou -->
+      <article class="project-hero project-hero--reverse" id="projet-beeclou">
+        <div class="project-hero__left">
+          <span class="project-type">Startup · Mobilité durable</span>
+          <h3>Beeclou</h3>
+          <p>Plateforme qui finance le vélo urbain par les trajets quotidiens. Cyclistes récompensés, entreprises visibles, villes engagées dans la mobilité douce.</p>
+          <a class="project-link" href="https://beeclou.fr" target="_blank" rel="noopener">
+            beeclou.fr
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 10L10 2M10 2H4M10 2v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+        <div class="project-hero__right project-hero__right--beeclou">
+          <p class="bee-headline">Vos trajets méritent<br><em>du sens.</em></p>
+          <div class="bee-card">
+            <span class="bee-card-label">🚴 Cycliste urbain</span>
+            <p class="bee-card-title">Votre vélo,<br>financé par vos trajets.</p>
+            <a class="bee-cta" href="https://beeclou.fr" target="_blank" rel="noopener">Découvrir Beeclou →</a>
+          </div>
+          <div class="bee-pillars">
+            <span class="bee-pillar">Mobilité douce</span>
+            <span class="bee-pillar">Économie locale</span>
+            <span class="bee-pillar">Impact mesurable</span>
+            <span class="bee-pillar">Pilote en cours</span>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- À PROPOS -->
+  <section id="apropos">
+    <div class="section-inner section-inner--narrow">
+      <h2 class="section-label">À propos</h2>
+      <p class="about-text">
+        Jean Echalier, 23 ans, basé à Paris.<br />
+        Les projets à impact me drive.
+      </p>
+      <p class="about-sub">
+        Social Media · Web Design · Vidéo — je travaille à l'intersection du fond et de la forme, avec la conviction que les belles idées méritent une belle exécution.
+      </p>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="section-inner section-inner--narrow">
+      <h2 class="section-label">Contact</h2>
+      <p class="contact-intro">Un projet ? Une collaboration ? Écrivez-moi.</p>
+
+      <form class="contact-form" action="https://formspree.io/f/mwvjnzjo" method="POST">
+        <div class="form-row">
+          <label for="name">Nom</label>
+          <input type="text" id="name" name="name" required autocomplete="name" placeholder="Votre nom" />
+        </div>
+        <div class="form-row">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required autocomplete="email" placeholder="votre@email.com" />
+        </div>
+        <div class="form-row">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" required rows="5" placeholder="Votre message..."></textarea>
+        </div>
+        <button type="submit" class="btn-submit">Envoyer</button>
+      </form>
+
+      <div class="contact-links">
+        <a href="mailto:jean63.echalier@gmail.com" class="contact-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke="currentColor" stroke-width="1.5"/>
+            <polyline points="22,6 12,13 2,6" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+          jean63.echalier@gmail.com
+        </a>
+        <a href="https://www.linkedin.com/in/jean-echalier-86b3aa222/" target="_blank" rel="noopener" class="contact-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z" stroke="currentColor" stroke-width="1.5"/>
+            <circle cx="4" cy="4" r="2" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+          LinkedIn
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2026 Jean Echalier</p>
+  </footer>
+
+  <script src="classic.js" defer></script>
+</body>
+</html>
