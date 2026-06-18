@@ -431,3 +431,8 @@ body[data-stage="experience"] #restart-btn { opacity: 1; visibility: visible; }
 .chapter-visual { position: relative; z-index: 3; }
 .chapter-visual--video { width: clamp(150px, 17vw, 220px); }
 .v-short { max-width: 220px; }
+
+/* lien email sous le formulaire de contact */
+.contact-or { margin-top: 14px; font-size: .82rem; color: var(--ink-faint); }
+.contact-or a { color: var(--gold); text-decoration: none; border-bottom: 1px solid var(--line); }
+.contact-or a:hover { border-color: var(--gold); }
