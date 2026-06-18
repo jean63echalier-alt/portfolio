@@ -2,6 +2,17 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
+  <script>
+    /* Routage par appareil : sur mobile, on sert le portfolio simple (mobile.html). */
+    (function () {
+      try {
+        var coarse = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+        var narrow = window.matchMedia && window.matchMedia('(max-width: 820px)').matches;
+        var uaMobile = /iPhone|iPod|Android.*Mobile|Windows Phone|BlackBerry|Opera Mini|IEMobile/i.test(navigator.userAgent);
+        if (uaMobile || (coarse && narrow)) { location.replace('mobile.html'); }
+      } catch (e) {}
+    })();
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Jean Echalier — Une expérience</title>
   <meta name="description" content="Expérience interactive immersive : le portfolio de Jean Echalier raconté chapitre par chapitre. Social Media, Web Design, Vidéo." />
@@ -24,7 +35,7 @@
   <!-- GSAP -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js" defer></script>
 
-  <link rel="stylesheet" href="experience.css" />
+  <link rel="stylesheet" href="style.css" />
   <link rel="icon" type="image/png" href="assets/favicon.png" />
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
   <link rel="apple-touch-icon" href="assets/favicon.png" />
@@ -68,7 +79,7 @@
         Social Media · Web Design · Vidéo.<br>
         Quatre projets, racontés comme une seule histoire — la mienne.
       </p>
-      <button class="cta js-enter-experience">Entrer dans l'expérience</button>
+      <button class="cta js-enter-experience">Découvrez mon savoir-faire</button>
       <p class="intro-hint js-intro-hint">Son recommandé · ~2 min</p>
     </div>
   </section>
@@ -91,9 +102,11 @@
         </div>
         <p class="instructions" data-instructions>Bougez le curseur pour agiter le flux.</p>
       </div>
-      <figure class="chapter-visual" data-visual>
-        <img src="assets/images/lsdj-instagram.png" alt="Compte Instagram LSDJ — La Sélection du Jour" loading="lazy" />
-        <figcaption>@lsdj · Instagram</figcaption>
+      <figure class="chapter-visual chapter-visual--video" data-visual>
+        <div class="v-short">
+          <iframe src="https://www.youtube.com/embed/D5AEtY9mcUc?rel=0&amp;playsinline=1" title="LSDJ — vidéo" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe>
+        </div>
+        <figcaption>LSDJ · vidéo</figcaption>
       </figure>
     </section>
 
@@ -186,17 +199,135 @@
   <!-- ── Recommencer (boucle, un clic) ── -->
   <button id="restart-btn" class="js-restart-loop" aria-label="Revenir au début">↺ Recommencer</button>
 
-  <!-- ── FIN / RETOUR AU PORTFOLIO ── -->
-  <section id="end" class="overlay overlay--center">
-    <div class="end-inner">
+  <!-- ── OUTRO / DOSSIER ── -->
+  <section id="outro" class="dossier">
+    <div class="dossier-hero overlay overlay--center">
       <p class="intro-eyebrow">Fin de l'expérience</p>
       <h2 class="big-title">
-        <span class="t-italic">Merci</span>
-        <span class="t-main">D'AVOIR VÉCU<br>L'EXPÉRIENCE</span>
+        <span class="t-italic">The</span>
+        <span class="t-main">DOSSIER</span>
       </h2>
-      <a href="index.html#projets" class="cta js-back-home">Voir mes projets</a>
-      <p class="end-hint js-end-hint">ou cliquez n'importe où pour voir les projets</p>
+      <p class="intro-tagline">Le détail des projets, et comment me joindre.</p>
+      <button class="cta cta--ghost js-restart">↺ Revivre l'expérience</button>
     </div>
+
+    <div class="dossier-body">
+
+      <!-- LSDJ -->
+      <article class="proj reveal">
+        <div class="proj-text">
+          <span class="proj-type">01 · Média</span>
+          <h3>LSDJ</h3>
+          <p>Production et gestion des réseaux sociaux d'un média engagé. Stratégie de contenu, tournage et montage vidéo court-format.</p>
+        </div>
+        <div class="proj-media">
+          <div class="v-short">
+            <iframe src="https://www.youtube.com/embed/D5AEtY9mcUc?rel=0&amp;playsinline=1" title="LSDJ — vidéo" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe>
+          </div>
+        </div>
+      </article>
+
+      <!-- Mes Convictions -->
+      <article class="proj proj--reverse reveal">
+        <div class="proj-text">
+          <span class="proj-type">02 · Site web</span>
+          <h3>Mes Convictions</h3>
+          <p>Plateforme civique permettant aux citoyens d'exprimer et partager leurs convictions. Design, identité visuelle et développement web.</p>
+          <a class="proj-link" href="https://www.mesconvictions.com" target="_blank" rel="noopener">mesconvictions.com
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 10L10 2M10 2H4M10 2v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+        <div class="proj-media">
+          <div class="rs-duo">
+            <div class="rs-video">
+              <iframe src="https://www.youtube.com/embed/vm1HOIOmewY?rel=0&amp;playsinline=1" title="Mes Convictions — vidéo" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe>
+            </div>
+            <img src="assets/images/mesconvictions-instagram.png" alt="Compte Instagram Mes Convictions" loading="lazy" />
+          </div>
+        </div>
+      </article>
+
+      <!-- MyThèse -->
+      <article class="proj reveal">
+        <div class="proj-text">
+          <span class="proj-type">03 · SaaS · EdTech</span>
+          <h3>MyThèse</h3>
+          <p>Coach IA qui structure le mémoire de recherche — et met l'étudiant en lien avec son directeur aux moments clés. Sources peer-reviewed via OpenAlex (250M papers), méthodologie française stricte. Jamais à ta place.</p>
+          <a class="proj-link" href="https://mythese.com" target="_blank" rel="noopener">mythese.com
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 10L10 2M10 2H4M10 2v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+        <div class="proj-media proj-media--panel">
+          <div class="mth">
+            <p class="mth-eyebrow">Coach méthodologique IA · Pas un rédacteur fantôme</p>
+            <p class="mth-headline">Le coach IA qui structure ton<br><em>mémoire de recherche.</em></p>
+            <div class="mth-modules">
+              <div class="mth-mod"><span>01</span> État de l'art <b class="live">V1 live</b></div>
+              <div class="mth-mod"><span>02</span> Coach problématique <b class="live">V1 live</b></div>
+              <div class="mth-mod"><span>03</span> Relecture méthodo <b class="soon">V2 — bientôt</b></div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Beeclou -->
+      <article class="proj proj--reverse reveal">
+        <div class="proj-text">
+          <span class="proj-type">04 · Startup · Mobilité</span>
+          <h3>Beeclou</h3>
+          <p>Plateforme qui finance le vélo urbain par les trajets quotidiens. Cyclistes récompensés, entreprises visibles, villes engagées dans la mobilité douce.</p>
+          <a class="proj-link" href="https://beeclou.fr" target="_blank" rel="noopener">beeclou.fr
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 10L10 2M10 2H4M10 2v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+        <div class="proj-media proj-media--panel">
+          <div class="bee">
+            <p class="bee-headline">Vos trajets méritent<br><em>du sens.</em></p>
+            <div class="bee-pillars">
+              <span>Mobilité douce</span><span>Économie locale</span><span>Impact mesurable</span><span>Pilote en cours</span>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Coda — autres collaborations -->
+      <article class="proj-coda reveal">
+        <span class="proj-type">Aussi à mon actif</span>
+        <div class="coda-grid">
+          <div class="coda-item">
+            <h4>Clermont Foot 63</h4>
+            <p>Contenus vidéo pour le club — production, montage, diffusion officielle.</p>
+          </div>
+          <div class="coda-item">
+            <h4>Département Puy-de-Dôme</h4>
+            <p>Réseaux sociaux institutionnels — visuels, rédaction, animation de communauté.</p>
+            <img src="assets/images/puydedome-instagram.png" alt="Instagram Département Puy-de-Dôme — @departement63" loading="lazy" />
+          </div>
+        </div>
+      </article>
+
+      <!-- Contact -->
+      <article class="contact reveal" id="contact">
+        <h3 class="big-title"><span class="t-italic">Let's</span> <span class="t-main">TALK</span></h3>
+        <p class="contact-intro">Un projet à impact ? Une collaboration ? Écrivez-moi.</p>
+        <form class="contact-form" action="https://formspree.io/f/mwvjnzjo" method="POST">
+          <div class="form-row"><input type="text" name="name" required autocomplete="name" placeholder="Votre nom" aria-label="Nom" /></div>
+          <div class="form-row"><input type="email" name="email" required autocomplete="email" placeholder="votre@email.com" aria-label="Email" /></div>
+          <div class="form-row"><textarea name="message" required rows="4" placeholder="Votre message…" aria-label="Message"></textarea></div>
+          <button type="submit" class="cta cta--ghost">Envoyer</button>
+        </form>
+        <div class="contact-links">
+          <a href="mailto:jean63.echalier@gmail.com">jean63.echalier@gmail.com</a>
+          <a href="https://www.linkedin.com/in/jean-echalier-86b3aa222/" target="_blank" rel="noopener">LinkedIn</a>
+        </div>
+      </article>
+
+    </div>
+
+    <footer class="dossier-footer">
+      <p>© 2026 Jean Echalier — Paris</p>
+      <p class="made">Expérience conçue avec WebGL · Three.js · GSAP</p>
+    </footer>
   </section>
 
   <!-- ── Panneau Info ── -->
@@ -219,6 +350,6 @@
 
   <div id="info-scrim" aria-hidden="true"></div>
 
-  <script src="experience.js" defer></script>
+  <script src="main.js" defer></script>
 </body>
 </html>
