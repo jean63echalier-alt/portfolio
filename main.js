@@ -517,16 +517,30 @@
     if (['ArrowDown', 'ArrowRight', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); nextStep(); }
     if (['ArrowUp', 'ArrowLeft', 'PageUp'].includes(e.key)) { e.preventDefault(); prevStep(); }
   });
+  // revenir du dossier vers les chapitres (scroll vers le haut en haut du dossier)
+  function backToChapters() {
+    body.dataset.stage = 'experience';
+    stage = 'experience';
+    current = LAST;
+    showChapter(LAST);
+  }
   let wheelLock = false;
+  const lock = () => { wheelLock = true; setTimeout(() => wheelLock = false, 620); };
   window.addEventListener('wheel', (e) => {
-    if (wheelLock || Math.abs(e.deltaY) < 24) return;
-    // sur l'accueil : faire défiler vers le bas entre dans l'expérience
+    if (Math.abs(e.deltaY) < 18) return;
+    // accueil : défiler vers le bas entre dans l'expérience
     if (stage === 'intro') {
-      if (e.deltaY > 0) { wheelLock = true; setTimeout(() => wheelLock = false, 850); enterExperience(); }
+      if (e.deltaY > 0 && !wheelLock) { lock(); enterExperience(); }
       return;
     }
-    if (stage !== 'experience') return;
-    wheelLock = true; setTimeout(() => wheelLock = false, 850);
+    // dossier : défilement natif ; en tout haut, remonter revient aux chapitres
+    if (stage === 'outro') {
+      if (e.deltaY < 0 && (window.scrollY || document.documentElement.scrollTop) <= 2 && !wheelLock) { lock(); backToChapters(); }
+      return;
+    }
+    // chapitres : chaque geste avance / recule d'un chapitre
+    if (stage !== 'experience' || wheelLock) return;
+    lock();
     e.deltaY > 0 ? nextStep() : prevStep();
   }, { passive: true });
 
