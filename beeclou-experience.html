@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<meta name="theme-color" content="#0A0901" />
+<title>Beeclou — Le Vol Vertueux</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500;1,700&family=Bellefair&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --main-bg:#0A0901;
+    --off-white:#E1D9D1;
+    --text:#332F22;
+    --gold:#9C6E49;
+    --gold-bright:#E8B873;
+    --sage:#8FA37C;
+    --sage-light:#B7C2A6;
+    --reveal:.9s;
+    --serif:'Playfair Display',serif;
+    --body:'Bellefair',serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--main-bg);
+    color:var(--off-white);
+    font-family:var(--body);
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  body.locked{overflow:hidden;height:100vh}
+
+  /* ---------- WebGL canvas ---------- */
+  #webgl{position:fixed;inset:0;width:100vw;height:100vh;z-index:-1;display:block}
+  #vignette{position:fixed;inset:0;z-index:-1;pointer-events:none;
+    background:radial-gradient(ellipse at center, transparent 45%, rgba(5,4,0,.55) 100%)}
+
+  /* ---------- Loader ---------- */
+  #loader{position:fixed;inset:0;z-index:200;background:var(--main-bg);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;
+    transition:opacity 1s ease}
+  #loader.hidden{opacity:0;pointer-events:none}
+  .loader-bee{font-size:34px;animation:bob 1.6s ease-in-out infinite}
+  @keyframes bob{0%,100%{transform:translateY(-6px) rotate(-4deg)}50%{transform:translateY(6px) rotate(4deg)}}
+  .loader-txt{font-family:var(--serif);letter-spacing:.5em;text-transform:uppercase;
+    font-size:13px;color:var(--gold);padding-left:.5em}
+  .loader-bar{width:160px;height:1px;background:rgba(225,217,209,.15);overflow:hidden}
+  .loader-bar i{display:block;height:100%;width:0;background:var(--gold-bright);animation:fill 2.2s ease forwards}
+  @keyframes fill{to{width:100%}}
+
+  /* ---------- Header ---------- */
+  header{position:fixed;top:0;left:0;right:0;z-index:100;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:22px 30px;mix-blend-mode:difference;pointer-events:none}
+  .h-btn{pointer-events:auto;width:42px;height:42px;border-radius:50%;
+    border:1px solid rgba(225,217,209,.45);background:transparent;color:var(--off-white);
+    display:flex;align-items:center;justify-content:center;cursor:pointer;
+    font-family:var(--serif);font-size:15px;transition:.35s;font-style:italic}
+  .h-btn:hover{border-color:var(--off-white);transform:scale(1.08)}
+  .logo{pointer-events:auto;font-family:var(--serif);font-weight:700;
+    letter-spacing:.42em;font-size:17px;text-transform:uppercase;padding-left:.42em;
+    color:var(--off-white);text-decoration:none}
+  .audio-ico{display:flex;gap:2px;align-items:flex-end;height:14px}
+  .audio-ico span{width:2px;background:var(--off-white);border-radius:2px;
+    animation:eq 1s ease-in-out infinite}
+  .audio-ico span:nth-child(1){height:6px;animation-delay:0s}
+  .audio-ico span:nth-child(2){height:12px;animation-delay:.2s}
+  .audio-ico span:nth-child(3){height:8px;animation-delay:.4s}
+  .audio-ico span:nth-child(4){height:11px;animation-delay:.1s}
+  @keyframes eq{0%,100%{transform:scaleY(.4)}50%{transform:scaleY(1)}}
+  .h-btn.muted .audio-ico span{animation-play-state:paused;transform:scaleY(.3)}
+
+  /* ---------- Chapter nav ---------- */
+  #chapnav{position:fixed;right:30px;top:50%;transform:translateY(-50%);z-index:90;
+    display:flex;flex-direction:column;gap:18px;mix-blend-mode:difference;opacity:0;
+    transition:opacity .8s}
+  #chapnav.show{opacity:1}
+  .chapdot{display:flex;align-items:center;gap:10px;cursor:pointer;
+    color:rgba(225,217,209,.5);transition:.35s;background:none;border:none;
+    font-family:var(--serif);font-size:13px;justify-content:flex-end}
+  .chapdot .num{font-style:italic}
+  .chapdot .bar{width:18px;height:1px;background:currentColor;transition:.35s}
+  .chapdot:hover{color:var(--off-white)}
+  .chapdot.active{color:var(--gold-bright)}
+  .chapdot.active .bar{width:34px}
+  @media(max-width:900px){#chapnav{display:none}}
+
+  /* ---------- Sections ---------- */
+  main{position:relative;z-index:10}
+  section{min-height:100vh;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;text-align:center;
+    padding:120px 24px;position:relative}
+  .eyebrow{font-family:var(--serif);font-style:italic;color:var(--gold-bright);
+    font-size:clamp(20px,3vw,32px);margin-bottom:6px}
+  .title{font-family:var(--serif);font-weight:900;text-transform:uppercase;
+    letter-spacing:.04em;line-height:.98;font-size:clamp(38px,8.5vw,104px);
+    color:var(--off-white)}
+  .chapter-no{font-family:var(--serif);font-style:italic;color:var(--gold);
+    font-size:15px;letter-spacing:.3em;margin-bottom:26px;text-transform:uppercase}
+  .narration{max-width:620px;margin:34px auto 0;display:flex;flex-direction:column;gap:16px}
+  .narration p{font-size:clamp(17px,2.2vw,22px);line-height:1.5;color:var(--off-white);
+    opacity:.92;letter-spacing:.02em}
+  .reveal-word .reveal-line{display:block;overflow:hidden}
+  .instr{margin-top:40px;font-family:var(--serif);font-style:italic;
+    color:rgba(225,217,209,.6);font-size:14px;letter-spacing:.12em}
+  .instr::before{content:"↑ ";opacity:.7}
+
+  /* hero */
+  #hero .title{font-size:clamp(44px,11vw,150px)}
+  .tagline{max-width:560px;margin:30px auto 0;font-size:clamp(17px,2.3vw,22px);
+    line-height:1.55;color:var(--off-white);opacity:.9}
+  .cta{display:inline-block;margin-top:46px;padding:16px 40px;border-radius:60px;
+    border:1px solid var(--off-white);color:var(--off-white);background:transparent;
+    text-transform:uppercase;letter-spacing:.28em;font-family:var(--serif);font-size:13px;
+    cursor:pointer;transition:.45s;text-decoration:none}
+  .cta:hover{background:var(--off-white);color:var(--main-bg);letter-spacing:.34em}
+  .cta.gold{border-color:var(--gold-bright);color:var(--gold-bright)}
+  .cta.gold:hover{background:var(--gold-bright);color:var(--main-bg)}
+  .cta-row{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-top:46px}
+  .cta-row .cta{margin-top:0}
+  .scroll-hint{position:absolute;bottom:34px;left:50%;transform:translateX(-50%);
+    font-family:var(--serif);font-style:italic;font-size:13px;letter-spacing:.18em;
+    color:rgba(225,217,209,.55);animation:bob 2.4s ease-in-out infinite}
+
+  /* recap card on outro */
+  .gain{max-width:560px;margin:38px auto 0;display:grid;gap:12px}
+  .gain div{display:flex;justify-content:space-between;gap:18px;
+    border-bottom:1px solid rgba(225,217,209,.14);padding-bottom:10px;
+    font-size:16px;letter-spacing:.02em}
+  .gain b{color:var(--gold-bright);font-weight:400;font-family:var(--serif);font-style:italic}
+
+  /* info panel */
+  #info{position:fixed;inset:0;z-index:150;background:rgba(9,10,2,.94);
+    backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;
+    opacity:0;pointer-events:none;transition:.5s;padding:30px}
+  #info.open{opacity:1;pointer-events:auto}
+  .info-box{max-width:560px}
+  .info-box h3{font-family:var(--serif);font-style:italic;color:var(--gold-bright);
+    font-size:13px;letter-spacing:.3em;text-transform:uppercase;margin:26px 0 12px}
+  .info-box h3:first-child{margin-top:0}
+  .info-box p{font-size:17px;line-height:1.6;opacity:.9;margin-bottom:10px}
+  .info-box a{color:var(--gold-bright)}
+  .info-close{position:absolute;top:24px;right:30px;cursor:pointer;color:var(--off-white);
+    font-size:26px;background:none;border:none}
+  .socials{display:flex;gap:18px;margin-top:14px;font-family:var(--serif);
+    text-transform:uppercase;letter-spacing:.2em;font-size:12px}
+  .socials a{text-decoration:none;border-bottom:1px solid transparent;transition:.3s}
+  .socials a:hover{border-color:var(--gold-bright)}
+
+  footer{position:fixed;bottom:16px;right:24px;z-index:80;font-family:var(--serif);
+    font-style:italic;font-size:12px;color:rgba(225,217,209,.4);mix-blend-mode:difference}
+
+  /* progress arc bottom */
+  #progress{position:fixed;left:24px;bottom:18px;z-index:80;font-family:var(--serif);
+    font-style:italic;color:rgba(225,217,209,.45);font-size:12px;letter-spacing:.2em;
+    mix-blend-mode:difference}
+</style>
+</head>
+<body class="locked">
+
+  <!-- Loader -->
+  <div id="loader">
+    <div class="loader-bee">🐝</div>
+    <div class="loader-txt">Beeclou</div>
+    <div class="loader-bar"><i></i></div>
+  </div>
+
+  <!-- WebGL -->
+  <canvas id="webgl"></canvas>
+  <div id="vignette"></div>
+
+  <!-- Header -->
+  <header>
+    <button class="h-btn" id="infoBtn" title="À propos">i</button>
+    <a href="#hero" class="logo">Beeclou</a>
+    <button class="h-btn" id="audioBtn" title="Son">
+      <span class="audio-ico"><span></span><span></span><span></span><span></span></span>
+    </button>
+  </header>
+
+  <!-- Chapter nav -->
+  <nav id="chapnav">
+    <button class="chapdot" data-go="1"><span>Le Départ</span><span class="num">1</span><span class="bar"></span></button>
+    <button class="chapdot" data-go="2"><span>Le Pollen</span><span class="num">2</span><span class="bar"></span></button>
+    <button class="chapdot" data-go="3"><span>La Ruche</span><span class="num">3</span><span class="bar"></span></button>
+    <button class="chapdot" data-go="4"><span>Le Miel</span><span class="num">4</span><span class="bar"></span></button>
+  </nav>
+
+  <main>
+    <!-- HERO -->
+    <section id="hero" data-chapter="0">
+      <div class="eyebrow reveal">Roulez en ville,</div>
+      <h1 class="title reveal">Soyez<br>récompensé</h1>
+      <p class="tagline reveal">Beeclou équipe votre vélo d'un top case. Vous choisissez la marque locale qu'il affiche — et chaque kilomètre parcouru vous rapporte.</p>
+      <button class="cta reveal" id="enterBtn">Entrer dans la ruche</button>
+      <div class="scroll-hint">le vol commence en défilant</div>
+    </section>
+
+    <!-- CH1 -->
+    <section id="c1" data-chapter="1">
+      <div class="chapter-no reveal">Chapitre I — L'aube</div>
+      <div class="eyebrow reveal">L'aube</div>
+      <h2 class="title reveal">Le vol<br>du matin</h2>
+      <div class="narration">
+        <p class="reveal">Avant que la ville ne s'éveille, une abeille quitte la ruche.</p>
+        <p class="reveal">Lina enfourche son vélo&nbsp;; Zélie déploie ses ailes. Le même élan.</p>
+        <p class="reveal">Chaque tour de roue est un coup d'aile — et chaque coup d'aile compte.</p>
+        <p class="reveal">Ici, on ne perd pas son temps dans les embouteillages. On butine la ville.</p>
+      </div>
+      <div class="instr reveal">Déplacez le curseur pour guider le vol</div>
+    </section>
+
+    <!-- CH2 -->
+    <section id="c2" data-chapter="2">
+      <div class="chapter-no reveal">Chapitre II — La rencontre</div>
+      <div class="eyebrow reveal">La rencontre</div>
+      <h2 class="title reveal">Le pollen<br>des marques</h2>
+      <div class="narration">
+        <p class="reveal">Sur son dos, l'abeille porte une couleur&nbsp;: celle d'une marque du quartier.</p>
+        <p class="reveal">Le top case est sa besace. Lina a choisi elle-même la fleur qu'elle annonce.</p>
+        <p class="reveal">De rue en rue, elle transporte cette présence comme on transporte du pollen.</p>
+        <p class="reveal">La marque ne crie pas sur un panneau figé. Elle voyage, vivante, au rythme de la ville.</p>
+      </div>
+      <div class="instr reveal">Survolez la ville pour déposer le pollen</div>
+    </section>
+
+    <!-- CH3 -->
+    <section id="c3" data-chapter="3">
+      <div class="chapter-no reveal">Chapitre III — Le soutien</div>
+      <div class="eyebrow reveal">Le soutien</div>
+      <h2 class="title reveal">La force<br>de la ruche</h2>
+      <div class="narration">
+        <p class="reveal">Une abeille seule fait peu. Une ruche change un paysage.</p>
+        <p class="reveal">L'employeur et la ville rejoignent le vol — et le portent plus loin.</p>
+        <p class="reveal">Par le Forfait Mobilités Durables, ils co-financent chaque trajet propre.</p>
+        <p class="reveal">Ce qui était un geste individuel devient un mouvement collectif.</p>
+      </div>
+      <div class="instr reveal">Rapprochez les vols pour bâtir la ruche</div>
+    </section>
+
+    <!-- CH4 -->
+    <section id="c4" data-chapter="4">
+      <div class="chapter-no reveal">Chapitre IV — La récolte</div>
+      <div class="eyebrow reveal">La récolte</div>
+      <h2 class="title reveal">Le miel<br>partagé</h2>
+      <div class="narration">
+        <p class="reveal">Vient l'heure où la ruche récolte ce que tous ont semé.</p>
+        <p class="reveal">Lina est rémunérée. La marque a gagné en visibilité. La ville respire mieux.</p>
+        <p class="reveal">Personne ne gagne contre un autre&nbsp;: chacun gagne grâce aux autres.</p>
+        <p class="reveal">C'est cela, un cercle vertueux — le miel revient à toute la ruche.</p>
+      </div>
+      <div class="instr reveal">Refermez le cercle</div>
+    </section>
+
+    <!-- OUTRO -->
+    <section id="outro" data-chapter="4">
+      <div class="eyebrow reveal">À votre tour de</div>
+      <h2 class="title reveal">Partir<br>essaimer</h2>
+      <div class="narration">
+        <p class="reveal">Quand une ruche déborde de vie, une abeille s'envole pour en fonder une autre.</p>
+        <p class="reveal">Le cercle vertueux ne se garde pas&nbsp;: il se propage.</p>
+        <p class="reveal">Une rue, un quartier, une ville à la fois.</p>
+      </div>
+      <div class="gain reveal">
+        <div><span>🚴 Le cycliste</span><b>rémunéré au kilomètre</b></div>
+        <div><span>📢 La marque locale</span><b>visible, vivante, mobile</b></div>
+        <div><span>🏢 L'employeur &amp; la ville</span><b>mobilité douce accélérée</b></div>
+        <div><span>🐝 La ruche entière</span><b>un miel partagé</b></div>
+      </div>
+      <div class="cta-row reveal">
+        <a href="#hero" class="cta gold">Essaimer dans ma ville</a>
+        <a href="#hero" class="cta">Devenir marque partenaire</a>
+      </div>
+      <div class="instr reveal" style="cursor:pointer" id="restart">Revivre l'expérience</div>
+    </section>
+  </main>
+
+  <footer>Beeclou — Le Vol Vertueux</footer>
+  <div id="progress">00 — 04</div>
+
+  <!-- Info panel -->
+  <div id="info">
+    <button class="info-close" id="infoClose">×</button>
+    <div class="info-box">
+      <h3>À propos de l'expérience</h3>
+      <p>Beeclou réinvente la mobilité urbaine : un top case posé sur votre vélo affiche une marque locale que vous choisissez, et chaque kilomètre parcouru vous rapporte. Marques, employeurs et villes co-financent vos trajets propres.</p>
+      <p>Cette expérience suit deux héros qui n'en font qu'un — Lina, la cycliste, et Zélie, l'abeille — pour révéler, chapitre après chapitre, le cercle vertueux de Beeclou.</p>
+      <h3>Nous contacter</h3>
+      <p><a href="mailto:bonjour@beeclou.fr">bonjour@beeclou.fr</a></p>
+      <div class="socials">
+        <a href="#">Instagram</a><a href="#">LinkedIn</a><a href="#">X</a>
+      </div>
+    </div>
+  </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+<script>
+/* ============================================================
+   BEECLOU — LE VOL VERTUEUX
+   Three.js particle field morphing per chapter + bee & trail
+   ============================================================ */
+(function(){
+  "use strict";
+
+  const COLORS = {
+    gold:      new THREE.Color('#E8B873'),
+    goldDeep:  new THREE.Color('#9C6E49'),
+    sage:      new THREE.Color('#8FA37C'),
+    cream:     new THREE.Color('#E1D9D1'),
+    pollenA:   new THREE.Color('#E8857A'),
+    pollenB:   new THREE.Color('#7FB3C4'),
+    pollenC:   new THREE.Color('#C9A24B'),
+    pollenD:   new THREE.Color('#9A7FB0'),
+  };
+
+  const N = 2600;                 // particle count
+  const canvas = document.getElementById('webgl');
+  let renderer, scene, camera;
+  let points, geo, posAttr, colAttr;
+  const cur = new Float32Array(N*3);     // current positions
+  const col = new Float32Array(N*3);     // current colors
+  const colTarget = new Float32Array(N*3);
+  const forms = [];                       // forms[chapter] = Float32Array(N*3)
+  let curForm = new Float32Array(N*3);    // active target positions
+  let chapter = 0, chapterF = 0;          // current chapter (display) & smoothed
+  const mouse = new THREE.Vector2(-10,-10);
+  const mouseWorld = new THREE.Vector3();
+  let W = innerWidth, H = innerHeight;
+
+  // Bee
+  let bee, beePos = new THREE.Vector3(0,0,0), beeTarget = new THREE.Vector3(0,0,0);
+  let trail, trailPositions, TRAIL=70, trailHistory=[];
+  let honey; // center glow for chapter 4
+
+  /* ---------- particle sprite texture ---------- */
+  function makeSprite(){
+    const c = document.createElement('canvas'); c.width=c.height=64;
+    const g = c.getContext('2d');
+    const grd = g.createRadialGradient(32,32,0,32,32,32);
+    grd.addColorStop(0,'rgba(255,255,255,1)');
+    grd.addColorStop(.25,'rgba(255,240,210,.9)');
+    grd.addColorStop(.6,'rgba(255,210,150,.25)');
+    grd.addColorStop(1,'rgba(255,210,150,0)');
+    g.fillStyle=grd; g.fillRect(0,0,64,64);
+    const t = new THREE.CanvasTexture(c); return t;
+  }
+
+  /* ---------- formation builders ---------- */
+  function rand(a,b){return a+Math.random()*(b-a);}
+
+  function buildForms(){
+    const aspect = W/H;
+    const spanX = 9*Math.max(1,aspect*0.7);
+    // 0 — HERO : soft drifting cloud
+    forms[0]=new Float32Array(N*3);
+    for(let i=0;i<N;i++){
+      const r=Math.pow(Math.random(),.6)*6;
+      const a=Math.random()*Math.PI*2, b=Math.acos(rand(-1,1));
+      forms[0][i*3]  = Math.cos(a)*Math.sin(b)*r*aspect*0.8;
+      forms[0][i*3+1]= Math.cos(b)*r*0.7;
+      forms[0][i*3+2]= Math.sin(a)*Math.sin(b)*r*0.5 - 2;
+    }
+    // 1 — ROUTE : a sinuous luminous path across the screen
+    forms[1]=new Float32Array(N*3);
+    for(let i=0;i<N;i++){
+      const t=i/N;
+      const x=(t-0.5)*spanX*2.0;
+      const y=Math.sin(t*Math.PI*3.0)*2.2 + Math.sin(t*Math.PI*7.0)*0.5;
+      const off=(Math.random()-0.5);
+      forms[1][i*3]  = x + off*0.5;
+      forms[1][i*3+1]= y + off*0.9;
+      forms[1][i*3+2]= Math.cos(t*Math.PI*4)*0.8 - 1;
+    }
+    // 2 — POLLEN / FACADES : grid of city blocks
+    forms[2]=new Float32Array(N*3);
+    const cols=26, rows=Math.ceil(N/cols);
+    for(let i=0;i<N;i++){
+      const cx=i%cols, cy=Math.floor(i/cols);
+      const gx=(cx/(cols-1)-0.5)*spanX*1.8;
+      const gy=(cy/(rows-1)-0.5)*7.2;
+      forms[2][i*3]  = gx + rand(-0.12,0.12);
+      forms[2][i*3+1]= gy + rand(-0.12,0.12);
+      forms[2][i*3+2]= rand(-1.5,0.5);
+    }
+    // 3 — RUCHE : hexagonal honeycomb lattice
+    forms[3]=new Float32Array(N*3);
+    {
+      const cells=[]; const R=0.62; const rings=14;
+      for(let q=-rings;q<=rings;q++){
+        for(let r=-rings;r<=rings;r++){
+          const x=R*1.5*q;
+          const y=R*Math.sqrt(3)*(r+q/2);
+          if(Math.hypot(x/aspect*0.9,y) < 4.4) cells.push([x,y]);
+        }
+      }
+      for(let i=0;i<N;i++){
+        const c=cells[i%cells.length];
+        const ang=Math.random()*Math.PI*2;
+        const rr=Math.sqrt(Math.random())*R*0.46;
+        forms[3][i*3]  = c[0]*aspect*0.95 + Math.cos(ang)*rr;
+        forms[3][i*3+1]= c[1] + Math.sin(ang)*rr;
+        forms[3][i*3+2]= rand(-0.6,0.6);
+      }
+    }
+    // 4 — CERCLE : the virtuous circle (ring) + honey center
+    forms[4]=new Float32Array(N*3);
+    for(let i=0;i<N;i++){
+      const a=(i/N)*Math.PI*2;
+      const ring=3.1 + (Math.random()<0.86? rand(-0.18,0.18) : rand(-2.6,0.0));
+      forms[4][i*3]  = Math.cos(a)*ring*aspect*0.7;
+      forms[4][i*3+1]= Math.sin(a)*ring;
+      forms[4][i*3+2]= rand(-0.5,0.5);
+    }
+  }
+
+  /* ---------- colours per chapter ---------- */
+  function setChapterColors(ch){
+    for(let i=0;i<N;i++){
+      let c;
+      if(ch===0){ c = Math.random()<.5?COLORS.gold:COLORS.goldDeep; }
+      else if(ch===1){ c = Math.random()<.7?COLORS.gold:COLORS.cream; }
+      else if(ch===2){
+        const r=Math.random();
+        c = r<.3?COLORS.pollenA : r<.55?COLORS.pollenB : r<.8?COLORS.pollenC : COLORS.pollenD;
+      }
+      else if(ch===3){ c = Math.random()<.55?COLORS.gold:COLORS.sage; }
+      else { c = Math.random()<.8?COLORS.gold:COLORS.goldDeep; }
+      colTarget[i*3]=c.r; colTarget[i*3+1]=c.g; colTarget[i*3+2]=c.b;
+    }
+  }
+
+  /* ---------- init ---------- */
+  function init(){
+    renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true});
+    renderer.setSize(W,H);
+    renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+    scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x0A0901, 0.045);
+    camera = new THREE.PerspectiveCamera(60, W/H, 0.1, 100);
+    camera.position.set(0,0,11);
+
+    buildForms();
+    // start at hero form
+    curForm.set(forms[0]);
+    for(let i=0;i<N*3;i++) cur[i]=forms[0][i]*1.4; // start scattered wider
+    setChapterColors(0);
+    for(let i=0;i<N*3;i++) col[i]=colTarget[i];
+
+    geo = new THREE.BufferGeometry();
+    posAttr = new THREE.BufferAttribute(cur,3);
+    colAttr = new THREE.BufferAttribute(col,3);
+    geo.setAttribute('position', posAttr);
+    geo.setAttribute('color', colAttr);
+    const mat = new THREE.PointsMaterial({
+      size:0.14, map:makeSprite(), vertexColors:true,
+      transparent:true, blending:THREE.AdditiveBlending,
+      depthWrite:false, opacity:0.95
+    });
+    points = new THREE.Points(geo, mat);
+    scene.add(points);
+
+    // honey center (chapter 4)
+    const hmat = new THREE.SpriteMaterial({map:makeSprite(), color:0xE8B873,
+      transparent:true, blending:THREE.AdditiveBlending, depthWrite:false, opacity:0});
+    honey = new THREE.Sprite(hmat); honey.scale.set(0,0,1); scene.add(honey);
+
+    // bee
+    const bmat = new THREE.SpriteMaterial({map:makeSprite(), color:0xFFE9B0,
+      transparent:true, blending:THREE.AdditiveBlending, depthWrite:false, opacity:.95});
+    bee = new THREE.Sprite(bmat); bee.scale.set(0.7,0.7,1); bee.position.z=1; scene.add(bee);
+
+    // trail line
+    trailPositions = new Float32Array(TRAIL*3);
+    for(let i=0;i<TRAIL;i++) trailHistory.push(new THREE.Vector3(0,0,1));
+    const tgeo = new THREE.BufferGeometry();
+    tgeo.setAttribute('position', new THREE.BufferAttribute(trailPositions,3));
+    const tmat = new THREE.LineBasicMaterial({color:0xE8B873, transparent:true,
+      opacity:.5, blending:THREE.AdditiveBlending, depthWrite:false});
+    trail = new THREE.Line(tgeo, tmat); scene.add(trail);
+
+    addEventListener('resize', onResize);
+    addEventListener('pointermove', onMove, {passive:true});
+    addEventListener('touchmove', e=>{ if(e.touches[0]) onMove(e.touches[0]); }, {passive:true});
+
+    animate();
+  }
+
+  function onResize(){
+    W=innerWidth; H=innerHeight;
+    renderer.setSize(W,H);
+    camera.aspect=W/H; camera.updateProjectionMatrix();
+    buildForms();
+    curForm.set(forms[chapter]);
+  }
+
+  function onMove(e){
+    mouse.x=(e.clientX/W)*2-1;
+    mouse.y=-(e.clientY/H)*2+1;
+  }
+
+  /* ---------- chapter switching ---------- */
+  function goChapter(ch){
+    if(ch===chapter) return;
+    chapter=ch;
+    curForm.set(forms[ch]);
+    setChapterColors(ch);
+    // honey fades in only on chapter 4
+    gsap.to(honey.material,{opacity: ch===4?0.85:0, duration:1.2});
+    gsap.to(honey.scale,{x: ch===4?5.5:0, y: ch===4?5.5:0, duration:1.6, ease:'power2.out'});
+    // background tint shifts toward green in ch3
+    const bg = ch===3 ? 0x0b1108 : 0x0A0901;
+    gsap.to(scene.fog.color,{r:((bg>>16)&255)/255, g:((bg>>8)&255)/255, b:(bg&255)/255, duration:1.4});
+    updateNav();
+  }
+
+  /* ---------- animation loop ---------- */
+  const tmp = new THREE.Vector3();
+  function animate(){
+    requestAnimationFrame(animate);
+    const time = performance.now()*0.001;
+
+    // mouse to world on z=0 plane
+    mouseWorld.set(mouse.x, mouse.y, 0.5).unproject(camera);
+    const dir = mouseWorld.sub(camera.position).normalize();
+    const dist = -camera.position.z/dir.z;
+    mouseWorld.copy(camera.position).add(dir.multiplyScalar(dist));
+
+    // bee eases toward cursor, with a little flutter
+    beeTarget.set(mouseWorld.x, mouseWorld.y, 1);
+    if(mouse.x<-5) beeTarget.set(Math.sin(time*0.6)*3, Math.cos(time*0.8)*2, 1);
+    beePos.lerp(beeTarget, 0.08);
+    bee.position.copy(beePos);
+    bee.position.x += Math.sin(time*9)*0.05;
+    bee.position.y += Math.cos(time*11)*0.05;
+    const pulse = 0.6+Math.sin(time*8)*0.08;
+    bee.scale.set(pulse,pulse,1);
+
+    // trail update
+    trailHistory.unshift(bee.position.clone());
+    trailHistory.pop();
+    for(let i=0;i<TRAIL;i++){
+      trailPositions[i*3]=trailHistory[i].x;
+      trailPositions[i*3+1]=trailHistory[i].y;
+      trailPositions[i*3+2]=trailHistory[i].z;
+    }
+    trail.geometry.attributes.position.needsUpdate=true;
+
+    // particles: lerp to target + flutter + mouse interaction
+    const ease = 0.045;
+    const mr = 2.2;     // mouse radius
+    for(let i=0;i<N;i++){
+      const ix=i*3, iy=ix+1, iz=ix+2;
+      let tx=curForm[ix], ty=curForm[iy], tz=curForm[iz];
+      // gentle per-particle drift
+      tx += Math.sin(time*0.7 + i*0.13)*0.10;
+      ty += Math.cos(time*0.6 + i*0.21)*0.10;
+
+      cur[ix]+=(tx-cur[ix])*ease;
+      cur[iy]+=(ty-cur[iy])*ease;
+      cur[iz]+=(tz-cur[iz])*ease;
+
+      // mouse influence — gather (ch3) / nudge (others)
+      const dx=cur[ix]-mouseWorld.x, dy=cur[iy]-mouseWorld.y;
+      const d2=dx*dx+dy*dy;
+      if(d2<mr*mr){
+        const f=(1-Math.sqrt(d2)/mr);
+        if(chapter===3){ // gather toward cursor
+          cur[ix]-=dx*f*0.06; cur[iy]-=dy*f*0.06;
+        } else {          // sparkle push
+          cur[ix]+=dx*f*0.05; cur[iy]+=dy*f*0.05;
+        }
+      }
+      // colour lerp
+      col[ix]+=(colTarget[ix]-col[ix])*0.05;
+      col[iy]+=(colTarget[iy]-col[iy])*0.05;
+      col[iz]+=(colTarget[iz]-col[iz])*0.05;
+    }
+    posAttr.needsUpdate=true;
+    colAttr.needsUpdate=true;
+
+    // slow rotation on the circle chapter for life
+    if(chapter===4){ points.rotation.z += 0.0014; }
+    else { points.rotation.z *= 0.96; }
+
+    // subtle camera parallax with mouse
+    camera.position.x += (mouse.x*0.8 - camera.position.x)*0.03;
+    camera.position.y += (mouse.y*0.5 - camera.position.y)*0.03;
+    camera.lookAt(0,0,0);
+
+    renderer.render(scene,camera);
+  }
+
+  /* ---------- nav UI ---------- */
+  function updateNav(){
+    document.querySelectorAll('.chapdot').forEach(d=>{
+      d.classList.toggle('active', +d.dataset.go===chapter);
+    });
+    const pg = document.getElementById('progress');
+    pg.textContent = '0'+chapter+' — 04';
+    document.getElementById('chapnav').classList.toggle('show', chapter>=1);
+  }
+
+  /* expose */
+  window.__beeclou = { goChapter, init };
+  init();
+})();
+
+/* ============================================================
+   GSAP — text reveals, scroll sync, UI
+   ============================================================ */
+window.addEventListener('load', ()=>{
+  gsap.registerPlugin(ScrollTrigger);
+
+  // loader out
+  setTimeout(()=>{
+    document.getElementById('loader').classList.add('hidden');
+    document.body.classList.remove('locked');
+  }, 2200);
+
+  // hero reveal
+  gsap.set('#hero .reveal',{y:40,opacity:0});
+  gsap.to('#hero .reveal',{y:0,opacity:1,duration:1.1,stagger:.16,ease:'power3.out',delay:2.4});
+
+  // section reveals on scroll
+  document.querySelectorAll('section:not(#hero)').forEach(sec=>{
+    const items = sec.querySelectorAll('.reveal');
+    gsap.set(items,{y:42,opacity:0});
+    ScrollTrigger.create({
+      trigger:sec, start:'top 62%',
+      onEnter:()=>gsap.to(items,{y:0,opacity:1,duration:1,stagger:.13,ease:'power3.out'}),
+    });
+    // chapter sync
+    const ch=+sec.dataset.chapter;
+    ScrollTrigger.create({
+      trigger:sec, start:'top 55%', end:'bottom 45%',
+      onEnter:()=>window.__beeclou.goChapter(ch),
+      onEnterBack:()=>window.__beeclou.goChapter(ch),
+    });
+  });
+
+  // enter button
+  document.getElementById('enterBtn').addEventListener('click',()=>{
+    document.getElementById('c1').scrollIntoView({behavior:'smooth'});
+    startAudio();
+  });
+  // chapter nav clicks
+  document.querySelectorAll('.chapdot').forEach(d=>{
+    d.addEventListener('click',()=>document.getElementById('c'+d.dataset.go).scrollIntoView({behavior:'smooth'}));
+  });
+  // restart
+  document.getElementById('restart').addEventListener('click',()=>{
+    document.getElementById('hero').scrollIntoView({behavior:'smooth'});
+  });
+
+  // info panel
+  const info=document.getElementById('info');
+  document.getElementById('infoBtn').addEventListener('click',()=>info.classList.add('open'));
+  document.getElementById('infoClose').addEventListener('click',()=>info.classList.remove('open'));
+
+  // ---------- ambient audio (WebAudio, generated) ----------
+  let actx, master, osc1, osc2, lfo, started=false, muted=false;
+  function startAudio(){
+    if(started) return; started=true;
+    try{
+      actx = new (window.AudioContext||window.webkitAudioContext)();
+      master = actx.createGain(); master.gain.value=0; master.connect(actx.destination);
+      function voice(freq,type,gain){
+        const o=actx.createOscillator(); o.type=type; o.frequency.value=freq;
+        const g=actx.createGain(); g.gain.value=gain; o.connect(g); g.connect(master); o.start();
+        return o;
+      }
+      osc1=voice(110,'sine',.5);
+      osc2=voice(164.81,'triangle',.18);
+      // gentle bee-wing tremolo
+      lfo=actx.createOscillator(); lfo.frequency.value=5.2;
+      const lg=actx.createGain(); lg.gain.value=14; lfo.connect(lg); lg.connect(osc2.frequency); lfo.start();
+      gsap.to(master.gain,{value:0.12,duration:3});
+    }catch(e){}
+  }
+  document.getElementById('audioBtn').addEventListener('click',function(){
+    if(!started){ startAudio(); }
+    muted=!muted; this.classList.toggle('muted',muted);
+    if(master) gsap.to(master.gain,{value:muted?0:0.12,duration:.6});
+  });
+});
+</script>
+</body>
+</html>
