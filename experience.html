@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Jean Echalier — Une expérience</title>
+  <meta name="description" content="Expérience interactive immersive : le portfolio de Jean Echalier raconté chapitre par chapitre. Social Media, Web Design, Vidéo." />
+  <meta name="theme-color" content="#fafaf9" />
+  <meta name="apple-mobile-web-app-title" content="Jean Echalier" />
+
+  <!-- OG -->
+  <meta property="og:title" content="Jean Echalier — Une expérience" />
+  <meta property="og:description" content="Portfolio immersif de Jean Echalier — créateur de contenu & web designer." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://jeechalier.fr" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,500;0,700;1,500&display=swap" rel="stylesheet" />
+
+  <!-- Three.js (WebGL) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js" defer></script>
+
+  <link rel="stylesheet" href="experience.css" />
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+  <link rel="apple-touch-icon" href="assets/favicon.png" />
+</head>
+<body class="is-loading" data-stage="intro">
+
+  <!-- ── WebGL canvas (fond fixe) ── -->
+  <canvas id="gl" class="z-negative" aria-hidden="true"></canvas>
+  <div class="grain" aria-hidden="true"></div>
+
+  <!-- ── Loader ── -->
+  <div id="loader" aria-hidden="true">
+    <div class="loader-mark">JE</div>
+    <div class="loader-bar"><span></span></div>
+  </div>
+
+  <!-- ── Header ── -->
+  <header id="header" class="js-header header-dark">
+    <button id="info-btn" class="round-btn" aria-label="À propos du projet" aria-expanded="false">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.4"/><path d="M12 11v5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="12" cy="7.6" r="1.1" fill="currentColor"/></svg>
+    </button>
+    <a href="#" class="brand js-brand" aria-label="Jean Echalier — accueil">JEAN&nbsp;ECHALIER</a>
+    <button id="audio-btn" class="round-btn muted js-audio-button" aria-label="Activer le son" aria-pressed="false">
+      <svg class="ico-sound" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M4 9v6h4l5 4V5L8 9H4z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+        <path class="wave" d="M16 9.5a4 4 0 010 5M18.5 7a7.5 7.5 0 010 10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+        <line class="mute-slash" x1="3" y1="3" x2="21" y2="21" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </header>
+
+  <!-- ── INTRO / HERO ── -->
+  <section id="intro" class="overlay overlay--center is-active">
+    <div class="intro-inner">
+      <p class="intro-eyebrow js-intro-eyebrow">Portfolio · Une expérience</p>
+      <h1 class="big-title js-intro-title">
+        <span class="t-italic js-intro-the">The</span>
+        <span class="t-main js-intro-main">CRAFT&nbsp;OF&nbsp;JEAN</span>
+      </h1>
+      <p class="intro-tagline js-intro-tagline">
+        Social Media · Web Design · Vidéo.<br>
+        Quatre projets, racontés comme une seule histoire — la mienne.
+      </p>
+      <button class="cta js-enter-experience">Entrer dans l'expérience</button>
+      <p class="intro-hint js-intro-hint">Son recommandé · ~2 min</p>
+    </div>
+  </section>
+
+  <!-- ── CHAPITRES ── -->
+  <main id="chapters">
+
+    <!-- Chapitre 1 — LSDJ -->
+    <section class="overlay chapter" data-chapter="0">
+      <div class="chapter-card">
+        <span class="chapter-kicker"><span class="num">01</span> · Média</span>
+        <h2 class="big-title chapter-title">
+          <span class="t-italic">The</span>
+          <span class="t-main">PULSE&nbsp;OF&nbsp;STORIES</span>
+        </h2>
+        <div class="subtitles" data-subtitle-group>
+          <p class="subtitle" data-subtitle>Chaque jour, une sélection. Chaque histoire, un battement.</p>
+          <p class="subtitle" data-subtitle>Pour <strong>LSDJ</strong>, j'ai donné un rythme à l'information — tournage, montage court-format, ligne éditoriale.</p>
+          <p class="subtitle" data-subtitle>Un média engagé qui se regarde d'un pouce, et se retient longtemps.</p>
+        </div>
+        <p class="instructions" data-instructions>Bougez le curseur pour agiter le flux.</p>
+      </div>
+      <figure class="chapter-visual" data-visual>
+        <img src="assets/images/lsdj-instagram.png" alt="Compte Instagram LSDJ — La Sélection du Jour" loading="lazy" />
+        <figcaption>@lsdj · Instagram</figcaption>
+      </figure>
+    </section>
+
+    <!-- Chapitre 2 — Mes Convictions -->
+    <section class="overlay chapter" data-chapter="1">
+      <div class="chapter-card">
+        <span class="chapter-kicker"><span class="num">02</span> · Site web · Plateforme civique</span>
+        <h2 class="big-title chapter-title">
+          <span class="t-italic">The</span>
+          <span class="t-main">CHORUS&nbsp;OF&nbsp;VOICES</span>
+        </h2>
+        <div class="subtitles" data-subtitle-group>
+          <p class="subtitle" data-subtitle>Des milliers de voix dispersées cherchant à se faire entendre.</p>
+          <p class="subtitle" data-subtitle><strong>Mes Convictions</strong> leur a donné une place — design, identité visuelle et développement d'une plateforme citoyenne.</p>
+          <p class="subtitle" data-subtitle>Quand les convictions se rassemblent, elles forment un chœur.</p>
+        </div>
+        <p class="instructions" data-instructions>Approchez le curseur pour rassembler les voix.</p>
+      </div>
+      <figure class="chapter-visual" data-visual>
+        <img src="assets/images/mesconvictions-instagram.png" alt="Compte Instagram Mes Convictions" loading="lazy" />
+        <figcaption><a href="https://www.mesconvictions.com" target="_blank" rel="noopener">mesconvictions.com ↗</a></figcaption>
+      </figure>
+    </section>
+
+    <!-- Chapitre 3 — MyThèse -->
+    <section class="overlay chapter" data-chapter="2">
+      <div class="chapter-card">
+        <span class="chapter-kicker"><span class="num">03</span> · SaaS · EdTech</span>
+        <h2 class="big-title chapter-title">
+          <span class="t-italic">The</span>
+          <span class="t-main">ARCHITECTURE&nbsp;OF&nbsp;THOUGHT</span>
+        </h2>
+        <div class="subtitles" data-subtitle-group>
+          <p class="subtitle" data-subtitle>Une idée brute n'est qu'un nuage de points.</p>
+          <p class="subtitle" data-subtitle><strong>MyThèse</strong> est le coach IA qui structure le mémoire de recherche — sources peer-reviewed, méthodologie stricte. Jamais à ta place.</p>
+          <p class="subtitle" data-subtitle>De la pensée éparse à l'ossature claire.</p>
+        </div>
+        <p class="instructions" data-instructions>Déplacez le curseur pour mettre la pensée en ordre.</p>
+      </div>
+      <figure class="chapter-visual chapter-visual--site" data-visual>
+        <div class="site-frame">
+          <span class="site-bar"><i></i><i></i><i></i><em>mythese.com/experience.html</em></span>
+          <span class="site-screen">
+            <iframe src="https://mythese.com/experience.html" title="MyThèse — l'expérience immersive" loading="lazy" sandbox="allow-scripts allow-same-origin allow-popups"></iframe>
+          </span>
+        </div>
+        <figcaption><a href="https://mythese.com/experience.html" target="_blank" rel="noopener">Ouvrir l'expérience ↗</a></figcaption>
+      </figure>
+    </section>
+
+    <!-- Chapitre 4 — Beeclou -->
+    <section class="overlay chapter" data-chapter="3">
+      <div class="chapter-card">
+        <span class="chapter-kicker"><span class="num">04</span> · Startup · Mobilité durable</span>
+        <h2 class="big-title chapter-title">
+          <span class="t-italic">The</span>
+          <span class="t-main">TRAJECTORIES&nbsp;OF&nbsp;MEANING</span>
+        </h2>
+        <div class="subtitles" data-subtitle-group>
+          <p class="subtitle" data-subtitle>Chaque trajet trace une ligne sur la ville.</p>
+          <p class="subtitle" data-subtitle><strong>Beeclou</strong> finance le vélo urbain par ces trajets — cyclistes récompensés, entreprises visibles, villes engagées.</p>
+          <p class="subtitle" data-subtitle>Vos déplacements méritent du sens.</p>
+        </div>
+        <p class="instructions" data-instructions>Guidez le curseur pour diriger les trajectoires.</p>
+      </div>
+      <figure class="chapter-visual chapter-visual--site" data-visual>
+        <div class="site-frame">
+          <span class="site-bar"><i></i><i></i><i></i><em>beeclou.fr</em></span>
+          <span class="site-screen">
+            <iframe src="https://beeclou.fr" title="Beeclou — mobilité urbaine durable" loading="lazy" sandbox="allow-scripts allow-same-origin allow-popups"></iframe>
+          </span>
+        </div>
+        <figcaption><a href="https://beeclou.fr" target="_blank" rel="noopener">Ouvrir beeclou.fr ↗</a></figcaption>
+      </figure>
+    </section>
+
+  </main>
+
+  <!-- ── Sélecteur de chapitres ── -->
+  <nav id="chapter-nav" class="js-chapter-nav" aria-label="Chapitres">
+    <button class="dot" data-go="0" aria-label="Chapitre 1"><span class="dot-num">01</span></button>
+    <button class="dot" data-go="1" aria-label="Chapitre 2"><span class="dot-num">02</span></button>
+    <button class="dot" data-go="2" aria-label="Chapitre 3"><span class="dot-num">03</span></button>
+    <button class="dot" data-go="3" aria-label="Chapitre 4"><span class="dot-num">04</span></button>
+  </nav>
+
+  <!-- ── Skip / suivant ── -->
+  <button id="skip-btn" class="js-skip">Chapitre suivant →</button>
+
+  <!-- ── Recommencer (boucle, un clic) ── -->
+  <button id="restart-btn" class="js-restart-loop" aria-label="Revenir au début">↺ Recommencer</button>
+
+  <!-- ── FIN / RETOUR AU PORTFOLIO ── -->
+  <section id="end" class="overlay overlay--center">
+    <div class="end-inner">
+      <p class="intro-eyebrow">Fin de l'expérience</p>
+      <h2 class="big-title">
+        <span class="t-italic">Merci</span>
+        <span class="t-main">D'AVOIR VÉCU<br>L'EXPÉRIENCE</span>
+      </h2>
+      <a href="index.html" class="cta js-back-home">Revenir au portfolio</a>
+      <p class="end-hint js-end-hint">ou cliquez n'importe où sur la page</p>
+    </div>
+  </section>
+
+  <!-- ── Panneau Info ── -->
+  <aside id="info-panel" class="js-menu" aria-hidden="true">
+    <button id="info-close" class="round-btn" aria-label="Fermer">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </button>
+    <div class="info-inner">
+      <h3>About the Project</h3>
+      <p>Cette expérience transforme un portfolio en récit interactif. Quatre projets de Jean Echalier — créateur de contenu et web designer basé à Paris — y deviennent quatre chapitres, chacun porté par une simulation WebGL que vous sculptez du bout du curseur.</p>
+      <p>Le fond et la forme, ensemble : c'est la conviction qui guide mon travail. Les belles idées méritent une belle exécution.</p>
+      <h3>Contact</h3>
+      <p><a href="mailto:jean63.echalier@gmail.com">jean63.echalier@gmail.com</a></p>
+      <div class="info-socials">
+        <a href="https://www.linkedin.com/in/jean-echalier-86b3aa222/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://www.mesconvictions.com" target="_blank" rel="noopener">Mes Convictions</a>
+      </div>
+    </div>
+  </aside>
+
+  <div id="info-scrim" aria-hidden="true"></div>
+
+  <script src="experience.js" defer></script>
+</body>
+</html>
