@@ -1,0 +1,314 @@
+/* ════════════════════════════════════════════════
+   Jean Echalier — Landing pages (Pack de Démarrage / LaunchPad IA)
+   Réutilise les tokens du portfolio (classic.css / style.css)
+   ════════════════════════════════════════════════ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --white: #fafaf9;
+  --white-2: #f1efec;
+  --black: #111110;
+  --gray-300: #d6d3d1;
+  --gray-500: #78716c;
+  --gray-700: #44403c;
+  --gold: #9c6e49;
+  --gold-2: #b98a5e;
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --max-w: 860px;
+  --section-gap: clamp(56px, 9vw, 100px);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-sans);
+  background: var(--white);
+  color: var(--black);
+  font-size: 16px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; }
+
+/* ── Header ── */
+.l-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 28px clamp(20px, 5vw, 0px);
+}
+.l-header .logo {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 1.1rem;
+  text-decoration: none;
+  letter-spacing: 0.04em;
+}
+.l-header .back-link {
+  font-size: 0.85rem;
+  color: var(--gray-700);
+  text-decoration: none;
+  border-bottom: 1px solid var(--gray-300);
+  padding-bottom: 2px;
+}
+.l-header .back-link:hover { color: var(--gold); border-color: var(--gold); }
+
+/* ── Layout helpers ── */
+.l-section { padding: var(--section-gap) clamp(20px, 5vw, 0px); }
+.l-inner { max-width: var(--max-w); margin: 0 auto; }
+.l-inner--narrow { max-width: 620px; }
+
+/* ── Hero / banner ── */
+.l-hero {
+  background: var(--white-2);
+  border-radius: 20px;
+  padding: clamp(40px, 7vw, 72px) clamp(24px, 6vw, 56px);
+  text-align: center;
+}
+.l-eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 18px;
+  display: block;
+}
+.l-h1 {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: clamp(2rem, 4.4vw, 3.2rem);
+  line-height: 1.12;
+  margin-bottom: 20px;
+}
+.l-lede {
+  font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+  color: var(--gray-700);
+  max-width: 620px;
+  margin: 0 auto;
+}
+
+/* ── Section titles ── */
+.l-h2 {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: clamp(1.5rem, 3vw, 2.1rem);
+  line-height: 1.2;
+  margin-bottom: 28px;
+  text-align: center;
+}
+
+/* ── Grids ── */
+.l-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+}
+.l-grid-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 24px;
+}
+@media (max-width: 720px) {
+  .l-grid-2, .l-grid-3 { grid-template-columns: 1fr; }
+}
+.l-card h3 {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 1.15rem;
+  margin-bottom: 10px;
+}
+.l-card p { color: var(--gray-700); font-size: 0.97rem; }
+
+/* ── Highlight box ── */
+.l-box {
+  background: var(--white-2);
+  border: 1px solid var(--gray-300);
+  border-radius: 16px;
+  padding: clamp(24px, 5vw, 40px);
+}
+.l-box h3 { text-align: center; margin-bottom: 20px; }
+
+/* ── Program list ── */
+.l-program { list-style: none; }
+.l-program li {
+  padding: 14px 0;
+  border-bottom: 1px solid var(--gray-300);
+  font-size: 0.98rem;
+}
+.l-program li:last-child { border-bottom: none; }
+.l-program strong { font-family: var(--font-serif); color: var(--gold); }
+
+/* ── FAQ ── */
+.l-faq { max-width: 680px; margin: 0 auto; }
+.l-faq details {
+  border-bottom: 1px solid var(--gray-300);
+  padding: 18px 0;
+}
+.l-faq summary {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 1.05rem;
+  cursor: pointer;
+  list-style: none;
+}
+.l-faq summary::-webkit-details-marker { display: none; }
+.l-faq summary::after { content: '+'; float: right; color: var(--gold); font-size: 1.3rem; }
+.l-faq details[open] summary::after { content: '–'; }
+.l-faq p { margin-top: 12px; color: var(--gray-700); }
+
+/* ── Buttons ── */
+.l-btn {
+  display: inline-block;
+  background: var(--black);
+  color: var(--white);
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 1rem;
+  padding: 16px 36px;
+  border-radius: 999px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: background 0.25s ease, transform 0.25s ease;
+}
+.l-btn:hover { background: var(--gold); transform: translateY(-1px); }
+.l-btn-wrap { text-align: center; }
+.l-price-note { font-size: 0.85rem; color: var(--gray-500); margin-top: 12px; }
+
+/* ── Capture form ── */
+.l-form {
+  max-width: 420px;
+  margin: 32px auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.l-form input {
+  width: 100%;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  padding: 14px 18px;
+  border: 1px solid var(--gray-300);
+  border-radius: 10px;
+  background: var(--white);
+  color: var(--black);
+}
+.l-form input:focus { outline: 2px solid var(--gold); outline-offset: 1px; }
+.l-form button { margin-top: 4px; }
+.l-form-note { font-size: 0.8rem; color: var(--gray-500); margin-top: 10px; }
+.l-thanks {
+  display: none;
+  max-width: 420px;
+  margin: 32px auto 0;
+  background: var(--white);
+  border: 1px solid var(--gold);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+}
+.l-thanks.is-visible { display: block; }
+.l-thanks p { font-family: var(--font-serif); font-weight: 700; }
+
+/* ── Table of contents (formation) ── */
+.l-toc {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin: 28px 0 0;
+}
+.l-toc a {
+  font-size: 0.85rem;
+  text-decoration: none;
+  color: var(--gray-700);
+  background: var(--white);
+  border: 1px solid var(--gray-300);
+  border-radius: 999px;
+  padding: 8px 16px;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+.l-toc a:hover { border-color: var(--gold); color: var(--gold); }
+
+/* ── Day module (formation) ── */
+.l-day {
+  border-top: 1px solid var(--gray-300);
+  padding: var(--section-gap) 0;
+  scroll-margin-top: 24px;
+}
+.l-day:first-of-type { border-top: none; }
+.l-day-kicker {
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  display: block;
+  margin-bottom: 10px;
+}
+.l-day h2 {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  margin-bottom: 18px;
+}
+.l-day h4 {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--gray-500);
+  margin: 22px 0 8px;
+}
+.l-day ul { padding-left: 20px; color: var(--gray-700); }
+.l-day li { margin-bottom: 8px; }
+.l-day p { color: var(--gray-700); }
+
+/* ── Prompt block (copyable) ── */
+.l-prompt {
+  background: var(--black);
+  color: var(--white);
+  border-radius: 14px;
+  padding: 22px 24px;
+  margin-top: 10px;
+  position: relative;
+}
+.l-prompt p {
+  color: var(--white-2);
+  font-size: 0.92rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  padding-right: 90px;
+}
+.l-copy-btn {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  background: var(--gold);
+  color: var(--black);
+  border: none;
+  border-radius: 999px;
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 500;
+  padding: 7px 14px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.l-copy-btn:hover { background: var(--gold-2); }
+.l-copy-btn.is-copied { background: #4caf7d; color: var(--white); }
+
+/* ── Footer ── */
+.l-footer {
+  text-align: center;
+  padding: 40px 20px 60px;
+  font-size: 0.82rem;
+  color: var(--gray-500);
+}
+.l-footer a { color: var(--gray-700); text-decoration: underline; }
