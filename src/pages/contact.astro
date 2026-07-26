@@ -1,0 +1,63 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+const services = (await getCollection("services")).sort((a, b) => a.data.order - b.data.order);
+---
+<BaseLayout
+  title="Contact & devis — Jean Echalier Services"
+  description="Décrivez votre projet : réponse sous 48 h avec une première recommandation et un devis sur mesure."
+>
+  <section class="mx-auto max-w-3xl px-5 pt-16">
+    <p class="eyebrow">Contact</p>
+    <h1 class="display text-5xl md:text-7xl mt-3">Parlons projet</h1>
+    <p class="mt-5 text-basalte/80 max-w-xl">
+      Quelques questions pour cadrer votre besoin — réponse sous 48 h avec
+      une première recommandation et un devis sur mesure.
+    </p>
+    <!-- Remplacer l'action par votre endpoint Formspree / Formspark / API Vercel -->
+    <form method="POST" action="https://formspree.io/f/VOTRE_ID" class="mt-10 grid gap-6">
+      <div class="grid sm:grid-cols-2 gap-6">
+        <label class="grid gap-1.5 text-sm font-medium">Nom
+          <input required name="nom" type="text" autocomplete="name" class="bg-blanc border border-basalte/25 px-4 py-3 font-normal" />
+        </label>
+        <label class="grid gap-1.5 text-sm font-medium">Email
+          <input required name="email" type="email" autocomplete="email" class="bg-blanc border border-basalte/25 px-4 py-3 font-normal" />
+        </label>
+      </div>
+      <label class="grid gap-1.5 text-sm font-medium">Service recherché
+        <select required name="service" class="bg-blanc border border-basalte/25 px-4 py-3 font-normal">
+          <option value="">Sélectionner…</option>
+          {services.map((s) => <option value={s.data.title}>{s.data.title}</option>)}
+          <option>Plusieurs services / je ne sais pas encore</option>
+        </select>
+      </label>
+      <div class="grid sm:grid-cols-2 gap-6">
+        <label class="grid gap-1.5 text-sm font-medium">Budget estimé
+          <select required name="budget" class="bg-blanc border border-basalte/25 px-4 py-3 font-normal">
+            <option value="">Sélectionner…</option>
+            <option>Moins de 1 500 €</option>
+            <option>1 500 € – 5 000 €</option>
+            <option>5 000 € – 15 000 €</option>
+            <option>Plus de 15 000 €</option>
+            <option>À définir ensemble</option>
+          </select>
+        </label>
+        <label class="grid gap-1.5 text-sm font-medium">Échéance souhaitée
+          <select required name="echeance" class="bg-blanc border border-basalte/25 px-4 py-3 font-normal">
+            <option value="">Sélectionner…</option>
+            <option>Urgent (moins d'un mois)</option>
+            <option>1 à 3 mois</option>
+            <option>Plus de 3 mois</option>
+            <option>Pas de contrainte</option>
+          </select>
+        </label>
+      </div>
+      <label class="grid gap-1.5 text-sm font-medium">Votre projet
+        <textarea required name="message" rows="6" placeholder="Contexte, objectifs, références qui vous inspirent…" class="bg-blanc border border-basalte/25 px-4 py-3 font-normal"></textarea>
+      </label>
+      <button type="submit" class="justify-self-start bg-basalte text-volvic px-8 py-4 font-medium hover:bg-cobalt transition-colors">
+        Envoyer ma demande
+      </button>
+    </form>
+  </section>
+</BaseLayout>

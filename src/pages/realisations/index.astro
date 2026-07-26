@@ -1,0 +1,37 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ProjetCard from "../../components/ProjetCard.astro";
+import CTA from "../../components/CTA.astro";
+import { getCollection } from "astro:content";
+
+const services = (await getCollection("services")).sort((a, b) => a.data.order - b.data.order);
+const projets = await getCollection("projets", ({ data }) => !data.draft);
+const groupes = services
+  .map((s) => ({ service: s, items: projets.filter((p) => p.data.pillar === s.data.pillar) }))
+  .filter((g) => g.items.length > 0);
+---
+<BaseLayout
+  title="Réalisations — Jean Echalier Services"
+  description="Applications mobiles, sites web, vidéos et campagnes social media réalisés pour des entreprises, institutions et startups."
+>
+  <section class="mx-auto max-w-6xl px-5 pt-16">
+    <p class="eyebrow">Portfolio</p>
+    <h1 class="display text-5xl md:text-7xl mt-3">Réalisations</h1>
+    <nav class="mt-8 flex flex-wrap gap-3" aria-label="Filtrer par pilier">
+      {groupes.map((g) => (
+        <a href={`#${g.service.data.pillar}`} class="border border-basalte/30 px-4 py-2 text-sm font-medium hover:border-cobalt hover:text-cobalt transition-colors">
+          {g.service.data.title}
+        </a>
+      ))}
+    </nav>
+    {groupes.map((g) => (
+      <div id={g.service.data.pillar} class="mt-16 scroll-mt-8">
+        <h2 class="display text-2xl md:text-3xl">{g.service.data.title}</h2>
+        <div class="mt-6 grid sm:grid-cols-2 gap-6">
+          {g.items.map((p) => <ProjetCard projet={p} />)}
+        </div>
+      </div>
+    ))}
+  </section>
+  <CTA titre="Votre projet, la prochaine référence ?" />
+</BaseLayout>

@@ -1,4 +1,8 @@
-.vercel
 .DS_Store
+.astro/
 .claude/
+.vercel
+.vercel/
 assets/images/Capture*
+dist/
+node_modules/

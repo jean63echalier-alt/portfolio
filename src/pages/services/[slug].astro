@@ -1,0 +1,60 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ProjetCard from "../../components/ProjetCard.astro";
+import CTA from "../../components/CTA.astro";
+import { getCollection, render } from "astro:content";
+
+export async function getStaticPaths() {
+  const services = await getCollection("services");
+  return services.map((s) => ({ params: { slug: s.id }, props: { service: s } }));
+}
+const { service } = Astro.props;
+const { Content } = await render(service);
+const d = service.data;
+const tous = (await getCollection("services")).sort((a, b) => a.data.order - b.data.order);
+const cas = await getCollection("projets", ({ data }) => !data.draft && data.pillar === d.pillar);
+---
+<BaseLayout title={`${d.title} — Jean Echalier Services`} description={d.accroche}>
+  <section class="mx-auto max-w-6xl px-5 pt-16">
+    <p class="eyebrow">Pilier 0{d.order} / 04</p>
+    <h1 class="display text-4xl md:text-6xl mt-3 max-w-4xl">{d.title}</h1>
+    <p class="mt-6 max-w-2xl text-lg text-basalte/80 leading-relaxed">{d.accroche}</p>
+
+    <div class="mt-14 grid md:grid-cols-2 gap-10">
+      <div>
+        <h2 class="eyebrow">Livrables</h2>
+        <ul class="mt-4 space-y-3">
+          {d.livrables.map((l) => (
+            <li class="border-l-2 border-cobalt pl-4 leading-snug">{l}</li>
+          ))}
+        </ul>
+      </div>
+      <div>
+        <h2 class="eyebrow">Formats de collaboration</h2>
+        <ul class="mt-4 flex flex-wrap gap-3">
+          {d.formats.map((f) => (
+            <li class="border border-basalte/25 px-4 py-2 text-sm">{f}</li>
+          ))}
+        </ul>
+        <p class="mt-5 text-sm text-cendre">Tarification sur devis, adaptée au périmètre et au format retenus.</p>
+        <div class="prose-projet mt-6 text-basalte/80"><Content /></div>
+      </div>
+    </div>
+
+    {cas.length > 0 && (
+      <div class="mt-20">
+        <h2 class="display text-2xl md:text-3xl">Cas clients associés</h2>
+        <div class="mt-6 grid sm:grid-cols-2 gap-6">
+          {cas.map((p) => <ProjetCard projet={p} />)}
+        </div>
+      </div>
+    )}
+
+    <nav class="mt-20 border-t border-basalte/15 pt-6 flex flex-wrap gap-x-8 gap-y-2 text-sm" aria-label="Autres piliers">
+      {tous.filter((s) => s.id !== service.id).map((s) => (
+        <a href={`/services/${s.id}`} class="hover:text-cobalt"><span class="font-mono text-cendre">P.0{s.data.order}</span> {s.data.title}</a>
+      ))}
+    </nav>
+  </section>
+  <CTA titre={`Besoin de ${d.title.toLowerCase()} ?`} />
+</BaseLayout>

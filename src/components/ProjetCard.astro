@@ -1,0 +1,18 @@
+---
+interface Props { projet: any }
+const { projet } = Astro.props;
+const { title, client, type, cover, year } = projet.data;
+---
+<a href={`/realisations/${projet.id}`} class="group block bg-blanc border border-basalte/10 hover:border-cobalt transition-colors">
+  {cover ? (
+    <img src={cover} alt={`Aperçu du projet ${client}`} class="aspect-[4/3] w-full object-cover" loading="lazy" />
+  ) : (
+    <div class="aspect-[4/3] w-full bg-lave flex items-end p-5">
+      <span class="display text-5xl text-basalte/15 group-hover:text-cobalt/25 transition-colors">{client.slice(0, 2)}</span>
+    </div>
+  )}
+  <div class="p-5">
+    <p class="eyebrow">{type} — {year}</p>
+    <h3 class="font-semibold mt-1.5 leading-snug group-hover:text-cobalt transition-colors">{title}</h3>
+  </div>
+</a>

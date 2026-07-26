@@ -1,0 +1,75 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ProjetCard from "../components/ProjetCard.astro";
+import CTA from "../components/CTA.astro";
+import { getCollection } from "astro:content";
+
+const services = (await getCollection("services")).sort((a, b) => a.data.order - b.data.order);
+const projets = (await getCollection("projets", ({ data }) => !data.draft && data.featured)).slice(0, 4);
+const slugByPillar = Object.fromEntries(services.map((s) => [s.data.pillar, s.id]));
+---
+<BaseLayout
+  title="Jean Echalier Services — Studio digital indépendant à Clermont-Ferrand"
+  description="Stratégie de marque, design & développement web / mobile, contenu audiovisuel et social media. Basé à Clermont-Ferrand, à distance dans toute la France."
+>
+  <section class="mx-auto max-w-6xl px-5 pt-16 md:pt-24">
+    <p class="eyebrow">Studio digital indépendant · Clermont-Ferrand → toute la France</p>
+    <h1 class="display text-[13vw] md:text-8xl mt-4">
+      Des idées<br /><span class="text-cobalt">à l'impact.</span>
+    </h1>
+    <p class="mt-6 max-w-xl text-lg leading-relaxed text-basalte/80">
+      Je conçois vos plateformes web et mobiles, produis vos contenus et
+      dynamise vos réseaux sociaux — de la stratégie à la mise en ligne.
+    </p>
+    <div class="mt-8 flex flex-wrap gap-4">
+      <a href="/contact" class="bg-basalte text-volvic px-6 py-3.5 font-medium hover:bg-cobalt transition-colors">Demander un devis</a>
+      <a href="/realisations" class="border border-basalte px-6 py-3.5 font-medium hover:border-cobalt hover:text-cobalt transition-colors">Voir les réalisations</a>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-5 mt-24 md:mt-32">
+    <p class="eyebrow">L'offre</p>
+    <h2 class="display text-3xl md:text-5xl mt-3">Quatre piliers, une offre à la carte</h2>
+    <div class="mt-10 border-t border-basalte/15">
+      {services.map((s) => (
+        <a href={`/services/${s.id}`} class="group grid md:grid-cols-[80px_1fr_auto] gap-x-8 gap-y-1 items-baseline py-6 border-b border-basalte/15 hover:bg-blanc transition-colors px-2 -mx-2">
+          <span class="font-mono text-sm text-cendre">P.0{s.data.order}</span>
+          <span>
+            <span class="display text-xl md:text-2xl group-hover:text-cobalt transition-colors">{s.data.title}</span>
+            <span class="block mt-1.5 text-sm text-basalte/70 max-w-2xl">{s.data.accroche}</span>
+          </span>
+          <span class="hidden md:block font-mono text-sm text-cendre group-hover:text-cobalt transition-colors">→</span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-5 mt-24 md:mt-32">
+    <div class="flex items-baseline justify-between gap-4 flex-wrap">
+      <div>
+        <p class="eyebrow">Preuves</p>
+        <h2 class="display text-3xl md:text-5xl mt-3">Projets phares</h2>
+      </div>
+      <a href="/realisations" class="font-medium text-sm hover:text-cobalt">Toutes les réalisations →</a>
+    </div>
+    <div class="mt-10 grid sm:grid-cols-2 gap-6">
+      {projets.map((p) => <ProjetCard projet={p} />)}
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-5 mt-24 md:mt-32 grid md:grid-cols-2 gap-10 items-start">
+    <div>
+      <p class="eyebrow">À propos</p>
+      <h2 class="display text-3xl md:text-4xl mt-3">Un seul interlocuteur, toute la chaîne</h2>
+    </div>
+    <p class="text-basalte/80 leading-relaxed">
+      Jean Echalier — designer, développeur et créateur de contenus basé à
+      Clermont-Ferrand. J'accompagne entreprises, institutions et startups
+      sur place en Auvergne, et à distance dans toute la France, avec un
+      objectif constant : des livrables soignés qui servent vos résultats.
+      <a href="/a-propos" class="block mt-3 font-medium hover:text-cobalt">En savoir plus →</a>
+    </p>
+  </section>
+
+  <CTA />
+</BaseLayout>

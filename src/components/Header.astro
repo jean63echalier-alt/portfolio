@@ -1,0 +1,20 @@
+---
+const nav = [
+  { href: "/services/conseil-marque-strategie", label: "Services" },
+  { href: "/realisations", label: "Réalisations" },
+  { href: "/a-propos", label: "À propos" },
+];
+---
+<header class="border-b border-basalte/10">
+  <div class="mx-auto max-w-6xl px-5 py-4 flex flex-wrap items-center gap-x-8 gap-y-3">
+    <a href="/" class="display text-lg tracking-tight">Jean&nbsp;Echalier</a>
+    <nav class="flex items-center gap-6 text-sm font-medium ml-auto">
+      {nav.map((item) => (
+        <a href={item.href} class="hover:text-cobalt transition-colors">{item.label}</a>
+      ))}
+      <a href="/contact" class="bg-basalte text-volvic px-4 py-2 hover:bg-cobalt transition-colors">
+        Demander un devis
+      </a>
+    </nav>
+  </div>
+</header>

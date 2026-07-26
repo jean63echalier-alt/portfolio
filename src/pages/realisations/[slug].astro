@@ -1,0 +1,46 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import CTA from "../../components/CTA.astro";
+import { getCollection, render } from "astro:content";
+
+export async function getStaticPaths() {
+  const projets = await getCollection("projets", ({ data }) => !data.draft);
+  return projets.map((p) => ({ params: { slug: p.id }, props: { projet: p } }));
+}
+const { projet } = Astro.props;
+const { Content } = await render(projet);
+const d = projet.data;
+const services = await getCollection("services");
+const service = services.find((s) => s.data.pillar === d.pillar);
+---
+<BaseLayout title={`${d.title} — Jean Echalier Services`} description={`${d.type} pour ${d.client} (${d.year}). ${d.role}.`}>
+  <article class="mx-auto max-w-3xl px-5 pt-16">
+    <p class="eyebrow">{d.type} · {d.year}</p>
+    <h1 class="display text-4xl md:text-6xl mt-3">{d.title}</h1>
+    <dl class="mt-8 grid sm:grid-cols-3 gap-4 text-sm border-y border-basalte/15 py-5">
+      <div><dt class="eyebrow">Client</dt><dd class="mt-1 font-medium">{d.client}</dd></div>
+      <div><dt class="eyebrow">Secteur</dt><dd class="mt-1 font-medium">{d.sector ?? "—"}</dd></div>
+      <div><dt class="eyebrow">Rôle</dt><dd class="mt-1 font-medium">{d.role}</dd></div>
+    </dl>
+    {d.videoId && (
+      <div class="mt-10 aspect-video">
+        <iframe class="w-full h-full" src={`https://www.youtube-nocookie.com/embed/${d.videoId}`} title={`Vidéo du projet ${d.client}`} allowfullscreen loading="lazy"></iframe>
+      </div>
+    )}
+    <div class="prose-projet mt-6"><Content /></div>
+    {d.gallery.length > 0 && (
+      <div class="mt-12 grid grid-cols-2 md:grid-cols-3 gap-4">
+        {d.gallery.map((src) => (
+          <img src={src} alt={`Écran du projet ${d.client}`} class="w-full border border-basalte/10" loading="lazy" />
+        ))}
+      </div>
+    )}
+    {service && (
+      <p class="mt-12 text-sm text-cendre">
+        Ce projet relève du pilier
+        <a href={`/services/${service.id}`} class="font-medium text-basalte hover:text-cobalt"> {service.data.title} →</a>
+      </p>
+    )}
+  </article>
+  <CTA titre="Un projet similaire ?" />
+</BaseLayout>

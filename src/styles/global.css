@@ -1,0 +1,68 @@
+@import "tailwindcss";
+
+@theme {
+  --color-volvic: #eeeeea;   /* fond — gris pierre de Volvic */
+  --color-blanc: #ffffff;
+  --color-basalte: #16181a;  /* encre */
+  --color-cendre: #75787a;   /* texte secondaire */
+  --color-cobalt: #2b3cf0;   /* accent */
+  --color-lave: #e8e6df;     /* surfaces */
+
+  --font-display: "Archivo", system-ui, sans-serif;
+  --font-sans: "Instrument Sans", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+body {
+  background: var(--color-volvic);
+  color: var(--color-basalte);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+.display {
+  font-family: var(--font-display);
+  font-stretch: 118%;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  line-height: 0.95;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--color-cendre);
+}
+
+a:focus-visible, button:focus-visible {
+  outline: 2px solid var(--color-cobalt);
+  outline-offset: 3px;
+}
+
+.prose-projet h2 {
+  font-family: var(--font-display);
+  font-stretch: 112%;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 1.05rem;
+  letter-spacing: 0.02em;
+  margin: 2.2rem 0 0.8rem;
+}
+.prose-projet p { margin: 0.8rem 0; line-height: 1.65; }
+.prose-projet ul { list-style: none; padding: 0; margin: 0.8rem 0; }
+.prose-projet li {
+  padding: 0.55rem 0 0.55rem 1.1rem;
+  border-left: 2px solid var(--color-cobalt);
+  margin: 0.45rem 0;
+  line-height: 1.55;
+}
+.prose-projet strong { font-weight: 600; }

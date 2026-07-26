@@ -1,0 +1,17 @@
+---
+interface Props { titre?: string }
+const { titre = "Un projet en tête ?" } = Astro.props;
+---
+<section class="mx-auto max-w-6xl px-5 mt-24">
+  <div class="bg-basalte text-volvic p-8 md:p-12 flex flex-wrap items-center justify-between gap-6">
+    <div>
+      <h2 class="display text-3xl md:text-4xl">{titre}</h2>
+      <p class="mt-2 text-volvic/70 max-w-md">
+        Réponse sous 48 h avec une première recommandation et un devis sur mesure.
+      </p>
+    </div>
+    <a href="/contact" class="bg-cobalt text-blanc px-6 py-3.5 font-medium hover:bg-blanc hover:text-basalte transition-colors">
+      Demander un devis
+    </a>
+  </div>
+</section>
