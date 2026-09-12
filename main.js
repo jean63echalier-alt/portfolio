@@ -14,6 +14,16 @@ window.addEventListener('load', () => {
     onLeaveBack: () => header.classList.remove('scrolled'),
   });
 
+  // Wrap hero name words for split animation
+  // (must run BEFORE the timeline below, otherwise GSAP can't find the target spans)
+  document.querySelectorAll('.hero-name .word').forEach(word => {
+    const text = word.textContent;
+    word.textContent = '';
+    const inner = document.createElement('span');
+    inner.textContent = text;
+    word.appendChild(inner);
+  });
+
   // Hero reveal
   const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
@@ -27,16 +37,8 @@ window.addEventListener('load', () => {
     }, '-=0.3')
     .to('.hero-title', { opacity: 1, y: 0, duration: 0.6 }, '-=0.4')
     .to('.hero-tagline', { opacity: 1, duration: 0.5 }, '-=0.3')
+    .to('.hero-skills', { opacity: 1, duration: 0.5 }, '-=0.3')
     .to('.cta-scroll', { opacity: 1, duration: 0.5 }, '-=0.3');
-
-  // Wrap hero name words for split animation
-  document.querySelectorAll('.hero-name .word').forEach(word => {
-    const text = word.textContent;
-    word.textContent = '';
-    const inner = document.createElement('span');
-    inner.textContent = text;
-    word.appendChild(inner);
-  });
 
   // Scroll reveals
   gsap.utils.toArray('.skill-block').forEach((el, i) => {
@@ -63,7 +65,7 @@ window.addEventListener('load', () => {
     });
   });
 
-  ['#apropos', '#contact'].forEach(sel => {
+  ['#references', '#apropos', '#contact'].forEach(sel => {
     gsap.from(sel, {
       scrollTrigger: { trigger: sel, start: 'top 85%' },
       opacity: 0,
