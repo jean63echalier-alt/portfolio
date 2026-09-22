@@ -253,8 +253,9 @@ section { padding: var(--section-gap) clamp(24px, 5vw, 64px); }
   color: var(--black);
 }
 
-.skill-link span { display: inline-block; margin-left: 4px; transition: transform var(--transition); }
-.skill-block:hover .skill-link span { transform: translateX(4px); }
+.skill-nowrap { white-space: nowrap; }
+.skill-arrow { display: inline-block; margin-left: 6px; transition: transform var(--transition); }
+.skill-block:hover .skill-arrow { transform: translateX(4px); }
 
 /* Ancres des projets : on laisse la place du header fixe, et le projet ciblé s'illumine brièvement. */
 .project-card,
@@ -587,6 +588,7 @@ footer {
 /* ── Project screenshot (LSDJ) ── */
 .project-screenshot {
   width: 100%;
+  height: auto;
   border-radius: 4px;
   display: block;
   object-fit: cover;
@@ -658,6 +660,7 @@ footer {
   object-fit: cover;
   max-height: 360px;
   width: 100%;
+  height: auto;
 }
 
 /* ── Project hero (MyThèse / Beeclou) ── */
