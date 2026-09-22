@@ -391,43 +391,6 @@ code {
   border: none;
 }
 
-.site-preview {
-  position: relative;
-  aspect-ratio: 4 / 3;
-  border-radius: 4px;
-  overflow: hidden;
-  border: 1px solid var(--gray-300);
-}
-
-.site-preview iframe {
-  width: 200%;
-  height: 200%;
-  border: none;
-  transform: scale(0.5);
-  transform-origin: top left;
-  pointer-events: none;
-}
-
-.preview-overlay {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0,0,0,0.04);
-  color: var(--black);
-  text-decoration: none;
-  font-size: 0.875rem;
-  font-weight: 500;
-  opacity: 0;
-  transition: opacity var(--transition), background var(--transition);
-}
-
-.site-preview:hover .preview-overlay {
-  opacity: 1;
-  background: rgba(0,0,0,0.08);
-}
-
 .social-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -614,24 +577,14 @@ footer {
 
 .rs-strip__link:hover { color: var(--black); }
 
-/* ── RS video (Mes Convictions) ── */
-.rs-video-block { margin-top: 14px; }
-
-.rs-video-label {
-  font-size: 0.7rem;
-  font-weight: 500;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--gray-500);
-  margin-bottom: 10px;
-}
-
+/* ── Short YouTube (Mes Convictions) ── */
 .rs-video-wrapper {
   position: relative;
   width: 100%;
+  max-width: 320px;
   aspect-ratio: 9 / 16;
-  max-width: 220px;
-  border-radius: 4px;
+  margin: 0 auto;
+  border-radius: 12px;
   overflow: hidden;
   background: var(--black);
 }
@@ -642,25 +595,6 @@ footer {
   width: 100%;
   height: 100%;
   border: none;
-}
-
-.rs-duo {
-  display: flex;
-  gap: 12px;
-  align-items: flex-start;
-}
-
-.rs-duo .rs-video-wrapper {
-  flex: 0 0 auto;
-}
-
-.rs-screenshot {
-  flex: 1 1 auto;
-  border-radius: 4px;
-  object-fit: cover;
-  max-height: 360px;
-  width: 100%;
-  height: auto;
 }
 
 /* ── Project hero (MyThèse / Beeclou) ── */
