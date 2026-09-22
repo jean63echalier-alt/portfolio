@@ -577,6 +577,23 @@ footer {
 
 .rs-strip__link:hover { color: var(--black); }
 
+/* ── Capture de site cliquable (Pépinière) ── */
+.site-shot {
+  display: block;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--gray-300);
+  box-shadow: 0 20px 40px -24px rgba(17, 17, 16, 0.35);
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.site-shot:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 28px 48px -24px rgba(17, 17, 16, 0.4);
+}
+
+.site-shot .project-screenshot { border-radius: 0; }
+
 /* ── Short YouTube (Mes Convictions) ── */
 .rs-video-wrapper {
   position: relative;
